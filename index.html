@@ -73,6 +73,15 @@
                         </div>
                         
                         <div id="scanner-tab" class="tab-content">
+                            <!-- داخل تبويب #scanner-tab -->
+<div id="scanner-container" style="display:none;">
+    <video id="scanner-video" playsinline></video>
+    <div id="scanner-overlay">
+        <div class="scanner-line"></div>
+        <!-- الزر الجديد -->
+        <button id="cancel-scan-btn" class="btn btn-secondary" data-translate-key="cancelScanBtn">إلغاء</button>
+    </div>
+</div>
                             <div id="scanner-container" style="display:none;">
                                 <video id="scanner-video" playsinline></video>
                                 <div id="scanner-overlay"><div class="scanner-line"></div></div>
