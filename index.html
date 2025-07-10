@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-translate-key="siteTitle">رمزك | مولد وقارئ رموز QR والباركود</title>
+    <title data-translate-key="siteTitle">رمزك | مولد رموز QR والباركود الاحترافي</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,13 +38,12 @@
         <section class="hero" id="generator">
             <div class="container">
                 <h1 data-translate-key="heroTitle">حوّل أفكارك إلى رموز بلمسة واحدة</h1>
-                <p data-translate-key="heroSubtitle">أنشئ، اقرأ، وخصص رموز QR وأكواد الباركود بسهولة فائقة.</p>
+                <p data-translate-key="heroSubtitle">أنشئ رموز QR وأكواد باركود مخصصة مجاناً وبسهولة فائقة.</p>
 
                 <div class="generator-box">
                     <div class="tabs">
                         <button class="tab-link active" data-tab="qr"><i class="fa-solid fa-qrcode"></i> <span data-translate-key="qrTab">رمز QR</span></button>
                         <button class="tab-link" data-tab="barcode"><i class="fa-solid fa-barcode"></i> <span data-translate-key="barcodeTab">باركود</span></button>
-                        <button class="tab-link" data-tab="scanner"><i class="fa-solid fa-camera-retro"></i> <span data-translate-key="scannerTab">القارئ</span></button>
                     </div>
 
                     <div class="generator-content">
@@ -65,36 +64,8 @@
                                 <select id="barcode-format">
                                     <option value="CODE128" selected>CODE128</option>
                                     <option value="CODE39">CODE39</option>
-                                    <option value="EAN13">EAN-13</option>
-                                    <option value="UPC">UPC</option>
-                                    <option value="ITF">ITF</option>
                                 </select>
                             </div>
-                        </div>
-                        
-                        <div id="scanner-tab" class="tab-content">
-                            <div id="scanner-container" style="display:none;">
-                                <video id="scanner-video" playsinline></video>
-                                <div id="scanner-overlay">
-                                    <div class="scanner-line"></div>
-                                    <button id="cancel-scan-btn" class="btn btn-secondary" data-translate-key="cancelScanBtn">إلغاء</button>
-                                </div>
-                            </div>
-                            <div id="scanner-actions">
-                                <button id="start-scan-btn" class="btn btn-primary">
-                                    <i class="fas fa-camera"></i> <span data-translate-key="startScanBtn">المسح بالكاميرا</span>
-                                </button>
-                                <label for="scan-file-input" class="btn btn-secondary">
-                                    <i class="fas fa-upload"></i> <span data-translate-key="uploadBtn">رفع صورة</span>
-                                </label>
-                                <input type="file" id="scan-file-input" accept="image/*" style="display: none;">
-                            </div>
-                            <div id="scan-result-container" style="display:none;">
-                                <h4 data-translate-key="scanResultTitle">نتيجة المسح:</h4>
-                                <p id="scan-result-text"></p>
-                                <button id="scan-again-btn" class="btn btn-secondary" data-translate-key="scanAgainBtn">مسح مرة أخرى</button>
-                            </div>
-                            <p id="scanner-error" class="error-message" style="display:none;"></p>
                         </div>
                         
                         <button id="generate-btn" class="btn btn-primary">
@@ -129,9 +100,9 @@
                         <p data-translate-key="feature1Desc">غيّر الألوان وأنشئ رموزًا فريدة تناسب علامتك التجارية.</p>
                     </div>
                     <div class="feature-card">
-                        <i class="fa-solid fa-camera"></i>
-                        <h3 data-translate-key="feature2Title">قارئ مدمج</h3>
-                        <p data-translate-key="feature2Desc">لا حاجة لتطبيقات خارجية، امسح أي رمز مباشرة من موقعنا.</p>
+                        <i class="fa-solid fa-tags"></i>
+                        <h3 data-translate-key="feature2Title">أنواع متعددة</h3>
+                        <p data-translate-key="feature2Desc">أنشئ رموز QR القياسية أو أكواد الباركود المستخدمة في المنتجات.</p>
                     </div>
                     <div class="feature-card">
                         <i class="fa-solid fa-file-export"></i>
@@ -156,41 +127,32 @@
                             <li><i class="fas fa-map-marker-alt"></i> <span data-translate-key="contactAddress">الرياض، المملكة العربية السعودية</span></li>
                         </ul>
                     </div>
-                   <div class="contact-form-container">
-  <form id="contact-form" name="contact" method="POST" data-netlify="true" novalidate>
-    <!-- Netlify hidden input -->
-    <input type="hidden" name="form-name" value="contact">
-
-    <div class="form-group">
-      <label for="name" data-translate-key="contactNameLabel">الاسم</label>
-      <input type="text" id="name" name="name" required>
-      <span class="error-text"></span>
-    </div>
-
-    <div class="form-group">
-      <label for="email" data-translate-key="contactEmailLabel">البريد الإلكتروني</label>
-      <input type="email" id="email" name="email" required>
-      <span class="error-text"></span>
-    </div>
-
-    <div class="form-group">
-      <label for="message" data-translate-key="contactMessageLabel">الرسالة</label>
-      <textarea id="message" name="message" rows="5" required></textarea>
-      <span class="error-text"></span>
-    </div>
-
-    <button type="submit" id="contact-submit-btn" class="btn btn-primary">
-      <span data-translate-key="contactSendBtn">إرسال الرسالة</span>
-    </button>
-  </form>
-
-  <!-- Response message -->
-  <div id="form-response" style="display: none;">
-    <h3 data-translate-key="formResponseTitle">شكراً لك!</h3>
-    <p data-translate-key="formResponseText">لقد استلمنا رسالتك وسنقوم بالرد في أقرب وقت ممكن.</p>
-  </div>
-</div>
-
+                    <div class="contact-form-container">
+                        <form id="contact-form" novalidate>
+                            <div class="form-group">
+                                <label for="name" data-translate-key="contactNameLabel">الاسم</label>
+                                <input type="text" id="name" name="name" required>
+                                <span class="error-text"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" data-translate-key="contactEmailLabel">البريد الإلكتروني</label>
+                                <input type="email" id="email" name="email" required>
+                                <span class="error-text"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="message" data-translate-key="contactMessageLabel">الرسالة</label>
+                                <textarea id="message" name="message" rows="5" required></textarea>
+                                <span class="error-text"></span>
+                            </div>
+                            <button type="submit" id="contact-submit-btn" class="btn btn-primary">
+                                <span data-translate-key="contactSendBtn">إرسال الرسالة</span>
+                            </button>
+                        </form>
+                        <div id="form-response" style="display: none;">
+                            <h3 data-translate-key="formResponseTitle">شكراً لك!</h3>
+                            <p data-translate-key="formResponseText">لقد استلمنا رسالتك وسنقوم بالرد في أقرب وقت ممكن.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -209,7 +171,6 @@
     
     <script src="https://cdn.jsdelivr.net/npm/davidshimjs-qrcodejs@0.0.2/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@zxing/library@latest/umd/zxing.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
