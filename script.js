@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             contactSendBtn: "Send Message", formResponseTitle: "Thank You!", formResponseText: "We have received your message and will get back to you shortly.",
             sendingBtn: "Sending...",
             startScanBtn: "Scan with Camera", uploadBtn: "Upload Image", cancelScanBtn: "Cancel", scanResultTitle: "Scan Result:", scanAgainBtn: "Scan Again",
-            scannerError: "Camera access was denied. Please allow camera access in your browser settings and try again.", noCameraError: "No camera found on this device.", noCodeInImageError: "No QR code or barcode found in the selected image.",
+            scannerError: "Camera access was denied. Please allow camera access in your browser settings and try again.", noCameraError: "No camera found on this device.", noCodeInImageError: "No QR code or barcode found in the selected image.", cameraInUseError: "Camera is already in use by another application.",
             invalidEmailError: "Please enter a valid email address.", requiredFieldError: "This field is required.",
             footerCopyright: "© 2023 Ramzak. All rights reserved."
         },
@@ -39,24 +39,27 @@ document.addEventListener('DOMContentLoaded', () => {
             contactSendBtn: "إرسال الرسالة", formResponseTitle: "شكراً لك!", formResponseText: "لقد استلمنا رسالتك وسنقوم بالرد في أقرب وقت ممكن.",
             sendingBtn: "جارٍ الإرسال...",
             startScanBtn: "المسح بالكاميرا", uploadBtn: "رفع صورة", cancelScanBtn: "إلغاء", scanResultTitle: "نتيجة المسح:", scanAgainBtn: "مسح مرة أخرى",
-            scannerError: "تم رفض الوصول إلى الكاميرا. الرجاء السماح بالوصول في إعدادات المتصفح والمحاولة مرة أخرى.", noCameraError: "لم يتم العثور على كاميرا على هذا الجهاز.", noCodeInImageError: "لم يتم العثور على رمز QR أو باركود في الصورة المحددة.",
+            scannerError: "تم رفض الوصول إلى الكاميرا. الرجاء السماح بالوصول في إعدادات المتصفح والمحاولة مرة أخرى.", noCameraError: "لم يتم العثور على كاميرا على هذا الجهاز.", noCodeInImageError: "لم يتم العثور على رمز QR أو باركود في الصورة المحددة.", cameraInUseError: "الكاميرا مستخدمة بالفعل من قبل تطبيق آخر.",
             invalidEmailError: "الرجاء إدخال عنوان بريد إلكتروني صالح.", requiredFieldError: "هذا الحقل مطلوب.",
             footerCopyright: "© 2023 رمزك. جميع الحقوق محفوظة."
         }
     };
 
     // --- DOM Elements ---
-    const generateBtn = document.getElementById('generate-btn'), resultContainer = document.getElementById('result-container'),
-          downloadDropdown = document.getElementById('download-dropdown'), downloadPngBtn = document.getElementById('download-png'),
-          downloadJpgBtn = document.getElementById('download-jpg'), downloadSvgBtn = document.getElementById('download-svg'),
-          codeOutput = document.getElementById('code-output'), tabs = document.querySelectorAll('.tab-link'),
-          tabContents = document.querySelectorAll('.tab-content'), darkModeToggle = document.getElementById('dark-mode-toggle'),
-          langArBtn = document.getElementById('lang-ar'), langEnBtn = document.getElementById('lang-en'),
-          scannerContainer = document.getElementById('scanner-container'), startScanBtn = document.getElementById('start-scan-btn'),
-          cancelScanBtn = document.getElementById('cancel-scan-btn'), scanFileInput = document.getElementById('scan-file-input'),
-          scannerActions = document.getElementById('scanner-actions'), scanResultContainer = document.getElementById('scan-result-container'),
-          scanResultText = document.getElementById('scan-result-text'), scanAgainBtn = document.getElementById('scan-again-btn'),
-          scannerError = document.getElementById('scanner-error');
+    const allElements = {
+        generateBtn: document.getElementById('generate-btn'), resultContainer: document.getElementById('result-container'),
+        downloadDropdown: document.getElementById('download-dropdown'), downloadPngBtn: document.getElementById('download-png'),
+        downloadJpgBtn: document.getElementById('download-jpg'), downloadSvgBtn: document.getElementById('download-svg'),
+        codeOutput: document.getElementById('code-output'), tabs: document.querySelectorAll('.tab-link'),
+        tabContents: document.querySelectorAll('.tab-content'), darkModeToggle: document.getElementById('dark-mode-toggle'),
+        langArBtn: document.getElementById('lang-ar'), langEnBtn: document.getElementById('lang-en'),
+        scannerContainer: document.getElementById('scanner-container'), startScanBtn: document.getElementById('start-scan-btn'),
+        cancelScanBtn: document.getElementById('cancel-scan-btn'), scanFileInput: document.getElementById('scan-file-input'),
+        scannerActions: document.getElementById('scanner-actions'), scanResultContainer: document.getElementById('scan-result-container'),
+        scanResultText: document.getElementById('scan-result-text'), scanAgainBtn: document.getElementById('scan-again-btn'),
+        scannerError: document.getElementById('scanner-error'), contactForm: document.getElementById('contact-form'),
+        nameInput: document.getElementById('name'), emailInput: document.getElementById('email'), messageInput: document.getElementById('message')
+    };
     
     let activeTab = 'qr', generatedCode = null, codeReader = null;
 
@@ -69,107 +72,60 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (el.placeholder) el.placeholder = translation;
                 else {
                     const icon = el.querySelector('i'), span = el.querySelector('span');
-                    if (span) span.textContent = translation; else if (el.tagName !== 'TITLE') el.textContent = translation; else document.title = translation;
-                    if (icon && el.tagName !== 'TITLE') el.prepend(icon, ' ');
+                    if (el.tagName === 'TITLE') { document.title = translation; return; }
+                    if (span) span.textContent = translation; else el.textContent = translation;
+                    if (icon) el.prepend(icon, ' ');
                 }
             }
         });
-        langArBtn.classList.toggle('active', lang === 'ar'); langEnBtn.classList.toggle('active', lang === 'en');
+        allElements.langArBtn.classList.toggle('active', lang === 'ar'); allElements.langEnBtn.classList.toggle('active', lang === 'en');
         localStorage.setItem('language', lang);
     };
     const setDarkMode = (isDark) => {
         document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        darkModeToggle.checked = isDark;
+        allElements.darkModeToggle.checked = isDark;
     };
-    langArBtn.addEventListener('click', () => setLanguage('ar')); langEnBtn.addEventListener('click', () => setLanguage('en'));
-    darkModeToggle.addEventListener('change', (e) => setDarkMode(e.target.checked));
+    allElements.langArBtn.addEventListener('click', () => setLanguage('ar'));
+    allElements.langEnBtn.addEventListener('click', () => setLanguage('en'));
+    allElements.darkModeToggle.addEventListener('change', (e) => setDarkMode(e.target.checked));
 
     // --- Tab Switching Logic ---
-    tabs.forEach(tab => {
+    allElements.tabs.forEach(tab => {
         tab.addEventListener('click', () => {
             resetScanner();
-            tabs.forEach(t => t.classList.remove('active')); tabContents.forEach(c => c.classList.remove('active'));
-            tab.classList.add('active'); activeTab = tab.dataset.tab;
+            allElements.tabs.forEach(t => t.classList.remove('active'));
+            allElements.tabContents.forEach(c => c.classList.remove('active'));
+            tab.classList.add('active');
+            activeTab = tab.dataset.tab;
             document.getElementById(`${activeTab}-tab`).classList.add('active');
             const isGeneratorTab = activeTab === 'qr' || activeTab === 'barcode';
-            generateBtn.style.display = isGeneratorTab ? 'block' : 'none';
-            if (isGeneratorTab) { if (generatedCode) showResult(); else resultContainer.style.display = 'none'; }
-            else resultContainer.style.display = 'none';
+            allElements.generateBtn.style.display = isGeneratorTab ? 'block' : 'none';
+            if (isGeneratorTab) { if (generatedCode) showResult(); else allElements.resultContainer.style.display = 'none'; }
+            else { allElements.resultContainer.style.display = 'none'; }
         });
     });
-// ... (كل الكود السابق)
 
-// --- REVISED SCANNER LOGIC (More Robust Error Handling) ---
-async function startCameraScan() {
-    scannerActions.style.display = 'none';
-    scannerContainer.style.display = 'block';
-    scannerError.style.display = 'none';
-    
-    try {
-        codeReader = new ZXing.BrowserMultiFormatReader();
-        const videoInputDevices = await codeReader.listVideoInputDevices();
-        
-        if (videoInputDevices.length === 0) {
-            showScannerError(translations[document.documentElement.lang].noCameraError);
-            scannerContainer.style.display = 'none';
-            return;
-        }
-
-        let selectedDeviceId = videoInputDevices[0].deviceId;
-        const rearCamera = videoInputDevices.find(device => /back|environment/i.test(device.label));
-        if (rearCamera) {
-            selectedDeviceId = rearCamera.deviceId;
-        }
-        
-        codeReader.decodeFromVideoDevice(selectedDeviceId, 'scanner-video', (result, err) => {
-            if (result) {
-                showScanResult(result.text);
-                codeReader.reset();
-            }
-            if (err && !(err instanceof ZXing.NotFoundException)) {
-                console.error("Scanning error during operation:", err);
-            }
-        });
-
-    } catch (err) {
-        console.error("Camera initialization error:", err);
-        scannerContainer.style.display = 'none';
-        
-        // Differentiate between user denying permission vs other errors
-        if (err.name === 'NotAllowedError') {
-            showScannerError(translations[document.documentElement.lang].scannerError);
-        } else {
-            showScannerError(translations[document.documentElement.lang].noCameraError + ` (${err.name})`);
-        }
-    }
-}
-
-// ... (باقي الكود كما هو)
     // --- Generation & Download Logic ---
-    generateBtn.addEventListener('click', () => { clearResult(); activeTab === 'qr' ? generateQRCode() : generateBarcode(); });
+    allElements.generateBtn.addEventListener('click', () => { clearResult(); activeTab === 'qr' ? generateQRCode() : generateBarcode(); });
     function generateQRCode() {
         const text = document.getElementById('qr-text').value; if (!text) return;
-        codeOutput.innerHTML = '';
-        generatedCode = new QRCode(codeOutput, { text, width: 256, height: 256, colorDark: document.getElementById('qr-fg-color').value, colorLight: document.getElementById('qr-bg-color').value, correctLevel: QRCode.CorrectLevel.H });
+        allElements.codeOutput.innerHTML = '';
+        generatedCode = new QRCode(allElements.codeOutput, { text, width: 256, height: 256, colorDark: document.getElementById('qr-fg-color').value, colorLight: document.getElementById('qr-bg-color').value, correctLevel: QRCode.CorrectLevel.H });
         showResult();
     }
     function generateBarcode() {
         const text = document.getElementById('barcode-text').value; if (!text) return;
-        codeOutput.innerHTML = '';
+        allElements.codeOutput.innerHTML = '';
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg"); svg.id = 'barcode';
-        codeOutput.appendChild(svg);
+        allElements.codeOutput.appendChild(svg);
         try { JsBarcode(svg, text, { format: document.getElementById('barcode-format').value, displayValue: true, fontSize: 18, textMargin: 10, background: '#ffffff' }); generatedCode = svg; showResult(); }
         catch (e) { console.error(e); clearResult(); }
     }
     async function downloadCanvas(format) {
         let canvas;
-        if(activeTab === 'qr') {
-            canvas = codeOutput.querySelector('canvas');
-        } else {
-            const svg = codeOutput.querySelector('svg');
-            if (svg) canvas = await convertSvgToCanvas(svg);
-        }
+        if(activeTab === 'qr') canvas = allElements.codeOutput.querySelector('canvas');
+        else { const svg = allElements.codeOutput.querySelector('svg'); if (svg) canvas = await convertSvgToCanvas(svg); }
         if (!canvas) return;
         const link = document.createElement('a'), fileExtension = format === 'jpeg' ? 'jpg' : 'png';
         link.download = `${activeTab}-code.${fileExtension}`; link.href = canvas.toDataURL(`image/${format}`, 1.0); link.click();
@@ -182,32 +138,29 @@ async function startCameraScan() {
             img.onload = () => {
                 canvas.width = img.width; canvas.height = img.height;
                 ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(img, 0, 0);
-                resolve(canvas);
+                ctx.drawImage(img, 0, 0); resolve(canvas);
             };
             img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)));
         });
     }
-    downloadPngBtn.addEventListener('click', (e) => { e.preventDefault(); downloadCanvas('png'); });
-    downloadJpgBtn.addEventListener('click', (e) => { e.preventDefault(); downloadCanvas('jpeg'); });
-    downloadSvgBtn.addEventListener('click', (e) => {
+    allElements.downloadPngBtn.addEventListener('click', (e) => { e.preventDefault(); downloadCanvas('png'); });
+    allElements.downloadJpgBtn.addEventListener('click', (e) => { e.preventDefault(); downloadCanvas('jpeg'); });
+    allElements.downloadSvgBtn.addEventListener('click', (e) => {
         e.preventDefault(); if (activeTab !== 'barcode' || !generatedCode) return;
         const source = new XMLSerializer().serializeToString(generatedCode), url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
         const link = document.createElement('a'); link.href = url; link.download = 'barcode.svg'; link.click();
     });
 
-    // --- REVISED SCANNER LOGIC ---
+    // --- ROBUST SCANNER LOGIC ---
     async function startCameraScan() {
-        scannerActions.style.display = 'none';
-        scannerContainer.style.display = 'block';
-        scannerError.style.display = 'none';
+        allElements.scannerActions.style.display = 'none';
+        allElements.scannerContainer.style.display = 'block';
+        allElements.scannerError.style.display = 'none';
         try {
             codeReader = new ZXing.BrowserMultiFormatReader();
             const videoInputDevices = await codeReader.listVideoInputDevices();
             if (videoInputDevices.length === 0) {
-                showScannerError(translations[document.documentElement.lang].noCameraError);
-                scannerContainer.style.display = 'none';
-                return;
+                handleScannerError({ name: 'NotFoundError' }); return;
             }
             let selectedDeviceId = videoInputDevices[0].deviceId;
             const rearCamera = videoInputDevices.find(device => /back|environment/i.test(device.label));
@@ -218,14 +171,25 @@ async function startCameraScan() {
                 if (err && !(err instanceof ZXing.NotFoundException)) console.error("Scanning error:", err);
             });
         } catch (err) {
-            console.error("Camera initialization error:", err);
-            scannerContainer.style.display = 'none';
-            showScannerError(translations[document.documentElement.lang].scannerError);
+            handleScannerError(err);
         }
     }
-    startScanBtn.addEventListener('click', startCameraScan);
-    cancelScanBtn.addEventListener('click', resetScanner);
-    scanFileInput.addEventListener('change', (event) => {
+    function handleScannerError(err) {
+        console.error("Scanner Error:", err.name, err.message);
+        let messageKey;
+        switch (err.name) {
+            case 'NotAllowedError': messageKey = 'scannerError'; break;
+            case 'NotFoundError': messageKey = 'noCameraError'; break;
+            case 'NotReadableError': messageKey = 'cameraInUseError'; break;
+            default: messageKey = 'scannerError'; break;
+        }
+        allElements.scannerError.textContent = translations[document.documentElement.lang][messageKey];
+        allElements.scannerError.style.display = 'block';
+        allElements.scannerContainer.style.display = 'none';
+    }
+    allElements.startScanBtn.addEventListener('click', startCameraScan);
+    allElements.cancelScanBtn.addEventListener('click', resetScanner);
+    allElements.scanFileInput.addEventListener('change', (event) => {
         const file = event.target.files[0]; if (!file) return;
         resetScanner(); const reader = new FileReader();
         reader.onload = (e) => {
@@ -234,31 +198,28 @@ async function startCameraScan() {
                 const localCodeReader = new ZXing.BrowserMultiFormatReader();
                 localCodeReader.decodeFromImageElement(image)
                     .then(result => showScanResult(result.text))
-                    .catch(() => showScannerError(translations[document.documentElement.lang].noCodeInImageError));
+                    .catch(() => handleScannerError({ name: 'NoCodeInImage' })); // Custom error for this case
             };
         }; reader.readAsDataURL(file);
     });
-    scanAgainBtn.addEventListener('click', resetScanner);
+    allElements.scanAgainBtn.addEventListener('click', resetScanner);
     function showScanResult(text) {
-        scanResultText.textContent = text; scannerActions.style.display = 'none';
-        scannerContainer.style.display = 'none'; scanResultContainer.style.display = 'block';
-        scannerError.style.display = 'none';
-    }
-    function showScannerError(message) {
-        scannerError.textContent = message; scannerError.style.display = 'block';
+        allElements.scanResultText.textContent = text;
+        allElements.scannerActions.style.display = 'none';
+        allElements.scannerContainer.style.display = 'none';
+        allElements.scanResultContainer.style.display = 'block';
+        allElements.scannerError.style.display = 'none';
     }
     function resetScanner() {
         if (codeReader) { codeReader.reset(); codeReader = null; }
-        scannerContainer.style.display = 'none'; scanResultContainer.style.display = 'none';
-        scannerError.style.display = 'none'; scannerActions.style.display = 'flex';
-        scanFileInput.value = '';
+        allElements.scannerContainer.style.display = 'none';
+        allElements.scanResultContainer.style.display = 'none';
+        allElements.scannerError.style.display = 'none';
+        allElements.scannerActions.style.display = 'flex';
+        allElements.scanFileInput.value = '';
     }
     
     // --- PROFESSIONAL CONTACT FORM LOGIC ---
-    const contactForm = document.getElementById('contact-form');
-    const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    const messageInput = document.getElementById('message');
     const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).toLowerCase());
     const showError = (input, message) => {
         const formGroup = input.parentElement; formGroup.classList.add('error');
@@ -268,34 +229,35 @@ async function startCameraScan() {
         const formGroup = input.parentElement; formGroup.classList.remove('error');
         formGroup.querySelector('.error-text').innerText = '';
     };
-    if(contactForm) {
-        [nameInput, emailInput, messageInput].forEach(input => input.addEventListener('input', () => clearError(input)));
-        contactForm.addEventListener('submit', (e) => {
+    if(allElements.contactForm) {
+        [allElements.nameInput, allElements.emailInput, allElements.messageInput].forEach(input => input.addEventListener('input', () => clearError(input)));
+        allElements.contactForm.addEventListener('submit', (e) => {
             e.preventDefault(); let isValid = true;
             const currentLang = document.documentElement.lang, requiredMsg = translations[currentLang].requiredFieldError, invalidEmailMsg = translations[currentLang].invalidEmailError;
-            [nameInput, emailInput, messageInput].forEach(input => clearError(input));
-            if (nameInput.value.trim() === '') { showError(nameInput, requiredMsg); isValid = false; }
-            const emailValue = emailInput.value.trim();
-            if (emailValue === '') { showError(emailInput, requiredMsg); isValid = false; } else if (!validateEmail(emailValue)) { showError(emailInput, invalidEmailMsg); isValid = false; }
-            if (messageInput.value.trim() === '') { showError(messageInput, requiredMsg); isValid = false; }
+            [allElements.nameInput, allElements.emailInput, allElements.messageInput].forEach(input => clearError(input));
+            if (allElements.nameInput.value.trim() === '') { showError(allElements.nameInput, requiredMsg); isValid = false; }
+            const emailValue = allElements.emailInput.value.trim();
+            if (emailValue === '') { showError(allElements.emailInput, requiredMsg); isValid = false; } else if (!validateEmail(emailValue)) { showError(allElements.emailInput, invalidEmailMsg); isValid = false; }
+            if (allElements.messageInput.value.trim() === '') { showError(allElements.messageInput, requiredMsg); isValid = false; }
             if (!isValid) return;
-            const submitBtn = document.getElementById('contact-submit-btn'), originalBtnText = submitBtn.innerHTML;
+            const submitBtn = document.getElementById('contact-submit-btn'), originalBtnHTML = submitBtn.innerHTML;
             submitBtn.disabled = true; submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${translations[currentLang].sendingBtn}`;
             setTimeout(() => {
-                contactForm.style.display = 'none'; document.getElementById('form-response').style.display = 'block';
+                allElements.contactForm.style.display = 'none'; document.getElementById('form-response').style.display = 'block';
                 setTimeout(() => {
-                    document.getElementById('form-response').style.display = 'none'; contactForm.style.display = 'flex';
-                    contactForm.reset(); submitBtn.disabled = false; submitBtn.innerHTML = originalBtnText;
+                    document.getElementById('form-response').style.display = 'none'; allElements.contactForm.style.display = 'flex';
+                    allElements.contactForm.reset(); submitBtn.disabled = false; submitBtn.innerHTML = originalBtnHTML;
                 }, 4000);
             }, 1500);
         });
     }
     
     // --- Helper Functions ---
-    function clearResult() { codeOutput.innerHTML = ''; resultContainer.style.display = 'none'; generatedCode = null; }
+    function clearResult() { allElements.codeOutput.innerHTML = ''; allElements.resultContainer.style.display = 'none'; generatedCode = null; }
     function showResult() {
-        resultContainer.style.display = 'flex'; downloadDropdown.style.display = 'inline-block';
-        downloadSvgBtn.style.display = (activeTab === 'barcode') ? 'block' : 'none';
+        allElements.resultContainer.style.display = 'flex';
+        allElements.downloadDropdown.style.display = 'inline-block';
+        allElements.downloadSvgBtn.style.display = (activeTab === 'barcode') ? 'block' : 'none';
     }
 
     // --- INITIALIZATION ---
