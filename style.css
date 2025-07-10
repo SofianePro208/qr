@@ -78,20 +78,6 @@ input[type="color"] { border: none; width: 40px; height: 40px; cursor: pointer; 
 .dropdown-menu a { color: var(--text-color); padding: 12px 16px; text-decoration: none; display: block; text-align: center; transition: background-color 0.2s; }
 .dropdown-menu a:hover { background-color: var(--secondary-color); }
 .download-dropdown:hover .dropdown-menu { display: block; }
-/* Scanner / Reader Tab */
-#scanner-container { position: relative; width: 100%; max-width: 500px; margin: 0 auto 1rem auto; border-radius: var(--border-radius); overflow: hidden; background: #000; }
-#scanner-video { width: 100%; height: auto; display: block; transform: scaleX(-1); } /* Mirror the video for user-friendliness */
-#scanner-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; }
-.scanner-line { width: 100%; height: 2px; background: red; box-shadow: 0 0 10px red; animation: scan 2s linear infinite; position: absolute; }
-@keyframes scan { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
-#scanner-overlay #cancel-scan-btn { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 10; opacity: 0.9; }
-#scanner-actions { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
-#scanner-actions .btn { display: inline-flex; align-items: center; justify-content: center; }
-#scanner-actions .btn i { margin-inline-end: 8px; }
-#scan-result-container { background: var(--secondary-color); padding: 1rem; border-radius: var(--border-radius); text-align: center; word-break: break-all; }
-#scan-result-container h4 { margin-bottom: 0.5rem; color: var(--primary-color); }
-#scan-result-container p { font-size: 1.1rem; font-weight: bold; margin-bottom: 1rem; }
-.error-message { color: #e74c3c; font-weight: bold; margin-top: 1rem; text-align: center; }
 /* --- Features Section --- */
 .features { padding: 4rem 0; }
 .features h2 { text-align: center; font-size: 2.2rem; color: var(--primary-color); margin-bottom: 3rem; }
