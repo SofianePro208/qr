@@ -125,6 +125,33 @@ footer { background: var(--primary-color); color: var(--bg-color); padding: 2rem
 footer .container { display: flex; justify-content: space-between; align-items: center; }
 .social-links a { color: var(--bg-color); margin: 0 0.5rem; font-size: 1.2rem; transition: color 0.3s ease; }
 .social-links a:hover { color: var(--accent-color); }
+/* أضف هذا الكود في نهاية ملف CSS قبل قسم @media */
+
+/* --- Scanner / Reader Tab Enhancements --- */
+#scanner-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+#scanner-actions .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+#scanner-actions .btn i {
+    margin-inline-end: 8px;
+}
+
+/* New Style for the Cancel Button */
+#scanner-overlay #cancel-scan-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    opacity: 0.9;
+}
 /* --- Responsive Design --- */
 @media (max-width: 992px) { .contact-wrapper { flex-direction: column; } }
 @media (max-width: 768px) { header .container, footer .container { flex-direction: column; gap: 1rem; } .hero h1 { font-size: 2.2rem; } }
