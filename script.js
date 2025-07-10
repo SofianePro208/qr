@@ -2,44 +2,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- DICTIONARY FOR TRANSLATIONS ---
     const translations = {
         en: {
-            siteTitle: "Ramzak | QR & Barcode Generator and Scanner", navGenerator: "Generator", navFeatures: "Features", navContact: "Contact Us",
-            heroTitle: "Turn Your Ideas into Codes with One Click", heroSubtitle: "Create, read, and customize QR codes and barcodes with super ease.",
-            qrTab: "QR Code", barcodeTab: "Barcode", scannerTab: "Scanner",
+            siteTitle: "Ramzak | Professional QR & Barcode Generator", navGenerator: "Generator", navFeatures: "Features", navContact: "Contact Us",
+            heroTitle: "Turn Your Ideas into Codes with One Click", heroSubtitle: "Create custom QR codes and barcodes for free, with super ease.",
+            qrTab: "QR Code", barcodeTab: "Barcode",
             qrInputPlaceholder: "Enter URL or text here...", fgColorLabel: "Code Color:", bgColorLabel: "Background:",
             barcodeInputPlaceholder: "Enter data (numbers or text)...", barcodeTypeLabel: "Type:",
             generateBtn: "Generate Code", downloadBtn: "Download",
             whyUsTitle: "Why Choose 'Ramzak'?",
             feature1Title: "Full Customization", feature1Desc: "Change colors and create unique codes that fit your brand.",
-            feature2Title: "Integrated Scanner", feature2Desc: "No need for external apps, scan any code directly from our site.",
+            feature2Title: "Multiple Types", feature2Desc: "Create standard QR codes or barcodes used on products.",
             feature3Title: "Multiple Formats", feature3Desc: "Download your codes in high-quality PNG, JPG, or SVG formats.",
             contactTitle: "Contact Us", contactSubtitle: "Have a question or a suggestion? We'd love to hear from you!",
             contactInfoTitle: "Contact Information", contactInfoDesc: "Feel free to contact us directly through the following channels.",
             contactAddress: "Riyadh, Saudi Arabia", contactNameLabel: "Name", contactEmailLabel: "Email", contactMessageLabel: "Message",
             contactSendBtn: "Send Message", formResponseTitle: "Thank You!", formResponseText: "We have received your message and will get back to you shortly.",
             sendingBtn: "Sending...",
-            startScanBtn: "Scan with Camera", uploadBtn: "Upload Image", cancelScanBtn: "Cancel", scanResultTitle: "Scan Result:", scanAgainBtn: "Scan Again",
-            scannerError: "Camera access was denied. Please allow camera access in your browser settings and try again.", noCameraError: "No camera found on this device.", cameraInUseError: "Camera is already in use by another application.", noCodeInImageError: "No QR code or barcode found in the selected image.",
             invalidEmailError: "Please enter a valid email address.", requiredFieldError: "This field is required.",
             footerCopyright: "© 2023 Ramzak. All rights reserved."
         },
         ar: {
-            siteTitle: "رمزك | مولد وقارئ رموز QR والباركود", navGenerator: "المولّد", navFeatures: "المميزات", navContact: "اتصل بنا",
-            heroTitle: "حوّل أفكارك إلى رموز بلمسة واحدة", heroSubtitle: "أنشئ، اقرأ، وخصص رموز QR وأكواد الباركود بسهولة فائقة.",
-            qrTab: "رمز QR", barcodeTab: "باركود", scannerTab: "القارئ",
+            siteTitle: "رمزك | مولد رموز QR والباركود الاحترافي", navGenerator: "المولّد", navFeatures: "المميزات", navContact: "اتصل بنا",
+            heroTitle: "حوّل أفكارك إلى رموز بلمسة واحدة", heroSubtitle: "أنشئ رموز QR وأكواد باركود مخصصة مجاناً وبسهولة فائقة.",
+            qrTab: "رمز QR", barcodeTab: "باركود",
             qrInputPlaceholder: "أدخل الرابط أو النص هنا...", fgColorLabel: "لون الرمز:", bgColorLabel: "لون الخلفية:",
             barcodeInputPlaceholder: "أدخل البيانات (أرقام أو حروف)...", barcodeTypeLabel: "النوع:",
             generateBtn: "توليد الرمز", downloadBtn: "تحميل",
             whyUsTitle: "لماذا تختار 'رمزك'؟",
             feature1Title: "تخصيص كامل", feature1Desc: "غيّر الألوان وأنشئ رموزًا فريدة تناسب علامتك التجارية.",
-            feature2Title: "قارئ مدمج", feature2Desc: "لا حاجة لتطبيقات خارجية، امسح أي رمز مباشرة من موقعنا.",
+            feature2Title: "أنواع متعددة", feature2Desc: "أنشئ رموز QR القياسية أو أكواد الباركود المستخدمة في المنتجات.",
             feature3Title: "صيغ متعددة", feature3Desc: "حمّل رموزك بصيغ PNG, JPG, أو SVG عالية الجودة.",
             contactTitle: "تواصل معنا", contactSubtitle: "هل لديك سؤال أو اقتراح؟ نود أن نسمع منك!",
             contactInfoTitle: "معلومات الاتصال", contactInfoDesc: "لا تتردد في التواصل معنا مباشرة عبر القنوات التالية.",
             contactAddress: "الرياض، المملكة العربية السعودية", contactNameLabel: "الاسم", contactEmailLabel: "البريد الإلكتروني", contactMessageLabel: "الرسالة",
             contactSendBtn: "إرسال الرسالة", formResponseTitle: "شكراً لك!", formResponseText: "لقد استلمنا رسالتك وسنقوم بالرد في أقرب وقت ممكن.",
             sendingBtn: "جارٍ الإرسال...",
-            startScanBtn: "المسح بالكاميرا", uploadBtn: "رفع صورة", cancelScanBtn: "إلغاء", scanResultTitle: "نتيجة المسح:", scanAgainBtn: "مسح مرة أخرى",
-            scannerError: "تم رفض الوصول إلى الكاميرا. الرجاء السماح بالوصول في إعدادات المتصفح والمحاولة مرة أخرى.", noCameraError: "لم يتم العثور على كاميرا على هذا الجهاز.", cameraInUseError: "الكاميرا مستخدمة بالفعل من قبل تطبيق آخر.", noCodeInImageError: "لم يتم العثور على رمز QR أو باركود في الصورة المحددة.",
             invalidEmailError: "الرجاء إدخال عنوان بريد إلكتروني صالح.", requiredFieldError: "هذا الحقل مطلوب.",
             footerCopyright: "© 2023 رمزك. جميع الحقوق محفوظة."
         }
@@ -52,14 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
           codeOutput = document.getElementById('code-output'), tabs = document.querySelectorAll('.tab-link'),
           tabContents = document.querySelectorAll('.tab-content'), darkModeToggle = document.getElementById('dark-mode-toggle'),
           langArBtn = document.getElementById('lang-ar'), langEnBtn = document.getElementById('lang-en'),
-          scannerContainer = document.getElementById('scanner-container'), startScanBtn = document.getElementById('start-scan-btn'),
-          cancelScanBtn = document.getElementById('cancel-scan-btn'), scanFileInput = document.getElementById('scan-file-input'),
-          scannerActions = document.getElementById('scanner-actions'), scanResultContainer = document.getElementById('scan-result-container'),
-          scanResultText = document.getElementById('scan-result-text'), scanAgainBtn = document.getElementById('scan-again-btn'),
-          scannerError = document.getElementById('scanner-error'), contactForm = document.getElementById('contact-form'),
-          nameInput = document.getElementById('name'), emailInput = document.getElementById('email'), messageInput = document.getElementById('message');
+          contactForm = document.getElementById('contact-form'), nameInput = document.getElementById('name'),
+          emailInput = document.getElementById('email'), messageInput = document.getElementById('message');
     
-    let activeTab = 'qr', generatedCode = null, codeReader = null;
+    let activeTab = 'qr', generatedCode = null;
 
     // --- Language & Theme Logic ---
     const setLanguage = (lang) => {
@@ -92,14 +84,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Tab Switching Logic ---
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            resetScanner();
             tabs.forEach(t => t.classList.remove('active')); tabContents.forEach(c => c.classList.remove('active'));
             tab.classList.add('active'); activeTab = tab.dataset.tab;
             document.getElementById(`${activeTab}-tab`).classList.add('active');
-            const isGeneratorTab = activeTab === 'qr' || activeTab === 'barcode';
-            generateBtn.style.display = isGeneratorTab ? 'block' : 'none';
-            if (isGeneratorTab) { if (generatedCode) showResult(); else resultContainer.style.display = 'none'; }
-            else { resultContainer.style.display = 'none'; }
+            if (generatedCode) showResult(); else resultContainer.style.display = 'none';
         });
     });
 
@@ -149,76 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const link = document.createElement('a'); link.href = url; link.download = 'barcode.svg'; link.click();
     });
 
-    // --- ROBUST SCANNER LOGIC ---
-    async function startCameraScan() {
-        scannerActions.style.display = 'none';
-        scannerContainer.style.display = 'block';
-        scannerError.style.display = 'none';
-        try {
-            codeReader = new ZXing.BrowserMultiFormatReader();
-            const videoInputDevices = await codeReader.listVideoInputDevices();
-            if (videoInputDevices.length === 0) {
-                handleScannerError({ name: 'NotFoundError' }); return;
-            }
-            let selectedDeviceId = videoInputDevices[0].deviceId;
-            const rearCamera = videoInputDevices.find(device => /back|environment/i.test(device.label));
-            if (rearCamera) selectedDeviceId = rearCamera.deviceId;
-            
-            codeReader.decodeFromVideoDevice(selectedDeviceId, 'scanner-video', (result, err) => {
-                if (result) { showScanResult(result.text); codeReader.reset(); }
-                if (err && !(err instanceof ZXing.NotFoundException)) console.error("Scanning error:", err);
-            });
-        } catch (err) {
-            handleScannerError(err);
-        }
-    }
-    function handleScannerError(err) {
-        console.error("Scanner Error:", err.name, err.message);
-        let messageKey;
-        switch (err.name) {
-            case 'NotAllowedError': messageKey = 'scannerError'; break;
-            case 'NotFoundError': messageKey = 'noCameraError'; break;
-            case 'NotReadableError': messageKey = 'cameraInUseError'; break;
-            case 'NoCodeInImage': messageKey = 'noCodeInImageError'; break;
-            default: messageKey = 'scannerError'; break;
-        }
-        scannerError.textContent = translations[document.documentElement.lang][messageKey];
-        scannerError.style.display = 'block';
-        scannerContainer.style.display = 'none'; // Hide the container on any error
-    }
-    startScanBtn.addEventListener('click', startCameraScan);
-    cancelScanBtn.addEventListener('click', resetScanner);
-    scanFileInput.addEventListener('change', (event) => {
-        const file = event.target.files[0]; if (!file) return;
-        resetScanner(); // Reset UI before processing
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const image = new Image(); image.src = e.target.result;
-            image.onload = () => {
-                const localCodeReader = new ZXing.BrowserMultiFormatReader();
-                localCodeReader.decodeFromImageElement(image)
-                    .then(result => showScanResult(result.text))
-                    .catch(() => handleScannerError({ name: 'NoCodeInImage' }));
-            };
-        }; reader.readAsDataURL(file);
-    });
-    scanAgainBtn.addEventListener('click', resetScanner);
-    function showScanResult(text) {
-        scanResultText.textContent = text;
-        scannerActions.style.display = 'none';
-        scannerContainer.style.display = 'none';
-        scanResultContainer.style.display = 'block';
-        scannerError.style.display = 'none';
-    }
-    function resetScanner() {
-        if (codeReader) { codeReader.reset(); codeReader = null; }
-        scannerContainer.style.display = 'none';
-        scanResultContainer.style.display = 'none';
-        scannerError.style.display = 'none';
-        scannerActions.style.display = 'flex';
-        scanFileInput.value = '';
-    }
-    
     // --- PROFESSIONAL CONTACT FORM LOGIC ---
     const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).toLowerCase());
     const showError = (input, message) => {
