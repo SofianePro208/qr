@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-translate-key="siteTitle">رمزك | مولد وقارئ رموز QR والباركود</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="#" class="logo">رمزك</a>
+            <nav>
+                <ul>
+                    <li><a href="#generator" data-translate-key="navGenerator">المولّد</a></li>
+                    <li><a href="#features" data-translate-key="navFeatures">المميزات</a></li>
+                    <li><a href="#contact" data-translate-key="navContact">اتصل بنا</a></li>
+                </ul>
+            </nav>
+            <div class="header-controls">
+                <div class="lang-switcher">
+                    <button id="lang-ar" class="active">AR</button>
+                    <button id="lang-en">EN</button>
+                </div>
+                <label class="dark-mode-switch">
+                    <input type="checkbox" id="dark-mode-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="generator">
+            <div class="container">
+                <h1 data-translate-key="heroTitle">حوّل أفكارك إلى رموز بلمسة واحدة</h1>
+                <p data-translate-key="heroSubtitle">أنشئ، اقرأ، وخصص رموز QR وأكواد الباركود بسهولة فائقة.</p>
+
+                <div class="generator-box">
+                    <div class="tabs">
+                        <button class="tab-link active" data-tab="qr"><i class="fa-solid fa-qrcode"></i> <span data-translate-key="qrTab">رمز QR</span></button>
+                        <button class="tab-link" data-tab="barcode"><i class="fa-solid fa-barcode"></i> <span data-translate-key="barcodeTab">باركود</span></button>
+                        <button class="tab-link" data-tab="scanner"><i class="fa-solid fa-camera-retro"></i> <span data-translate-key="scannerTab">القارئ</span></button>
+                    </div>
+
+                    <div class="generator-content">
+                        <div id="qr-tab" class="tab-content active">
+                           <input type="text" id="qr-text" data-translate-key="qrInputPlaceholder" placeholder="أدخل الرابط أو النص هنا...">
+                           <div class="options">
+                               <label for="qr-fg-color" data-translate-key="fgColorLabel">لون الرمز:</label>
+                               <input type="color" id="qr-fg-color" value="#0A2540">
+                               <label for="qr-bg-color" data-translate-key="bgColorLabel">لون الخلفية:</label>
+                               <input type="color" id="qr-bg-color" value="#FFFFFF">
+                           </div>
+                        </div>
+
+                        <div id="barcode-tab" class="tab-content">
+                             <input type="text" id="barcode-text" data-translate-key="barcodeInputPlaceholder" placeholder="أدخل البيانات (أرقام أو حروف)...">
+                             <div class="options">
+                                <label for="barcode-format" data-translate-key="barcodeTypeLabel">النوع:</label>
+                                <select id="barcode-format">
+                                    <option value="CODE128" selected>CODE128</option>
+                                    <option value="CODE39">CODE39</option>
+                                    <option value="EAN13">EAN-13</option>
+                                    <option value="UPC">UPC</option>
+                                    <option value="ITF">ITF</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div id="scanner-tab" class="tab-content">
+                            <div id="scanner-container" style="display:none;">
+                                <video id="scanner-video" playsinline></video>
+                                <div id="scanner-overlay"><div class="scanner-line"></div></div>
+                            </div>
+                            <div id="scanner-actions">
+                                <button id="start-scan-btn" class="btn btn-primary">
+                                    <i class="fas fa-camera"></i> <span data-translate-key="startScanBtn">المسح بالكاميرا</span>
+                                </button>
+                                <label for="scan-file-input" class="btn btn-secondary">
+                                    <i class="fas fa-upload"></i> <span data-translate-key="uploadBtn">رفع صورة</span>
+                                </label>
+                                <input type="file" id="scan-file-input" accept="image/*" style="display: none;">
+                            </div>
+                            <div id="scan-result-container" style="display:none;">
+                                <h4 data-translate-key="scanResultTitle">نتيجة المسح:</h4>
+                                <p id="scan-result-text"></p>
+                                <button id="scan-again-btn" class="btn btn-secondary" data-translate-key="scanAgainBtn">مسح مرة أخرى</button>
+                            </div>
+                            <p id="scanner-error" class="error-message" style="display:none;"></p>
+                        </div>
+                        
+                        <button id="generate-btn" class="btn btn-primary">
+                            <i class="fa-solid fa-bolt"></i> <span data-translate-key="generateBtn">توليد الرمز</span>
+                        </button>
+                    </div>
+
+                    <div id="result-container" style="display: none;">
+                        <div id="code-output"></div>
+                        <div class="download-dropdown" id="download-dropdown">
+                            <button class="btn btn-secondary dropdown-toggle">
+                                <i class="fa-solid fa-download"></i> <span data-translate-key="downloadBtn">تحميل</span> <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="#" id="download-png">PNG</a>
+                                <a href="#" id="download-jpg">JPG</a>
+                                <a href="#" id="download-svg">SVG</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="container">
+                <h2 data-translate-key="whyUsTitle">لماذا تختار "رمزك"؟</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <h3 data-translate-key="feature1Title">تخصيص كامل</h3>
+                        <p data-translate-key="feature1Desc">غيّر الألوان وأنشئ رموزًا فريدة تناسب علامتك التجارية.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fa-solid fa-camera"></i>
+                        <h3 data-translate-key="feature2Title">قارئ مدمج</h3>
+                        <p data-translate-key="feature2Desc">لا حاجة لتطبيقات خارجية، امسح أي رمز مباشرة من موقعنا.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fa-solid fa-file-export"></i>
+                        <h3 data-translate-key="feature3Title">صيغ متعددة</h3>
+                        <p data-translate-key="feature3Desc">حمّل رموزك بصيغ PNG, JPG, أو SVG عالية الجودة.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact" id="contact">
+            <div class="container">
+                <h2 data-translate-key="contactTitle">تواصل معنا</h2>
+                <p class="section-subtitle" data-translate-key="contactSubtitle">هل لديك سؤال أو اقتراح؟ نود أن نسمع منك!</p>
+                <div class="contact-wrapper">
+                    <div class="contact-info">
+                        <h3 data-translate-key="contactInfoTitle">معلومات الاتصال</h3>
+                        <p data-translate-key="contactInfoDesc">لا تتردد في التواصل معنا مباشرة عبر القنوات التالية.</p>
+                        <ul>
+                            <li><i class="fas fa-envelope"></i> <a href="mailto:support@ramzak.com">support@ramzak.com</a></li>
+                            <li><i class="fas fa-phone"></i> <a href="tel:+123456789">+1 (234) 567-89</a></li>
+                            <li><i class="fas fa-map-marker-alt"></i> <span data-translate-key="contactAddress">الرياض، المملكة العربية السعودية</span></li>
+                        </ul>
+                    </div>
+                    <div class="contact-form-container">
+                        <form id="contact-form">
+                            <div class="form-group">
+                                <label for="name" data-translate-key="contactNameLabel">الاسم</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" data-translate-key="contactEmailLabel">البريد الإلكتروني</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message" data-translate-key="contactMessageLabel">الرسالة</label>
+                                <textarea id="message" name="message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" id="contact-submit-btn" class="btn btn-primary">
+                                <span data-translate-key="contactSendBtn">إرسال الرسالة</span>
+                            </button>
+                        </form>
+                        <div id="form-response" style="display: none;">
+                            <h3 data-translate-key="formResponseTitle">شكراً لك!</h3>
+                            <p data-translate-key="formResponseText">لقد استلمنا رسالتك وسنقوم بالرد في أقرب وقت ممكن.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p data-translate-key="footerCopyright">&copy; 2023 رمزك. جميع الحقوق محفوظة.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/davidshimjs-qrcodejs@0.0.2/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@zxing/library@latest/umd/zxing.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
