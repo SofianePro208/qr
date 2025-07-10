@@ -152,6 +152,30 @@ footer .container { display: flex; justify-content: space-between; align-items: 
     z-index: 10;
     opacity: 0.9;
 }
+/* --- Form Validation Styles --- */
+.form-group .error-text {
+    color: #e74c3c; /* Red color for errors */
+    font-size: 0.9rem;
+    font-weight: 700;
+    display: none; /* Hidden by default */
+    margin-top: 5px;
+}
+
+/* When a form group has an error */
+.form-group.error input,
+.form-group.error textarea {
+    border-color: #e74c3c;
+    background-color: #fff6f6;
+}
+
+body[data-theme="dark"] .form-group.error input,
+body[data-theme="dark"] .form-group.error textarea {
+    background-color: #3d2f2f;
+}
+
+.form-group.error .error-text {
+    display: block; /* Show the error message */
+}
 /* --- Responsive Design --- */
 @media (max-width: 992px) { .contact-wrapper { flex-direction: column; } }
 @media (max-width: 768px) { header .container, footer .container { flex-direction: column; gap: 1rem; } .hero h1 { font-size: 2.2rem; } }
