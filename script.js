@@ -171,4 +171,120 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- INITIALIZATION (No changes) ---
     // (Copy the initialization code from the previous response here)
+    // --- DICTIONARY FOR TRANSLATIONS (ADD NEW KEYS) ---
+const translations = {
+    en: {
+        // ... (All previous keys)
+        invalidEmailError: "Please enter a valid email address.",
+        requiredFieldError: "This field is required."
+    },
+    ar: {
+        // ... (All previous keys)
+        invalidEmailError: "الرجاء إدخال عنوان بريد إلكتروني صالح.",
+        requiredFieldError: "هذا الحقل مطلوب."
+    }
+};
+
+// ... (Find the contact form logic at the end of the script and replace it entirely with this) ...
+
+// =============================================================
+// --- PROFESSIONAL CONTACT FORM LOGIC WITH VALIDATION ---
+// =============================================================
+const contactForm = document.getElementById('contact-form');
+const nameInput = document.getElementById('name');
+const emailInput = document.getElementById('email');
+const messageInput = document.getElementById('message');
+
+if (contactForm) {
+    // Helper function to validate email format using Regex
+    const validateEmail = (email) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    };
+
+    // Helper function to show an error message
+    const showError = (input, message) => {
+        const formGroup = input.parentElement;
+        formGroup.classList.add('error');
+        const errorText = formGroup.querySelector('.error-text');
+        errorText.innerText = message;
+    };
+
+    // Helper function to clear error messages
+    const clearError = (input) => {
+        const formGroup = input.parentElement;
+        formGroup.classList.remove('error');
+        const errorText = formGroup.querySelector('.error-text');
+        errorText.innerText = '';
+    };
+
+    // Clear errors as the user types
+    nameInput.addEventListener('input', () => clearError(nameInput));
+    emailInput.addEventListener('input', () => clearError(emailInput));
+    messageInput.addEventListener('input', () => clearError(messageInput));
+
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Always prevent default submission
+
+        let isValid = true;
+        const currentLang = document.documentElement.lang;
+        const requiredMsg = translations[currentLang].requiredFieldError;
+        const invalidEmailMsg = translations[currentLang].invalidEmailError;
+
+        // Clear all previous errors before validating again
+        clearError(nameInput);
+        clearError(emailInput);
+        clearError(messageInput);
+
+        // 1. Validate Name
+        if (nameInput.value.trim() === '') {
+            showError(nameInput, requiredMsg);
+            isValid = false;
+        }
+
+        // 2. Validate Email
+        const emailValue = emailInput.value.trim();
+        if (emailValue === '') {
+            showError(emailInput, requiredMsg);
+            isValid = false;
+        } else if (!validateEmail(emailValue)) {
+            showError(emailInput, invalidEmailMsg);
+            isValid = false;
+        }
+
+        // 3. Validate Message
+        if (messageInput.value.trim() === '') {
+            showError(messageInput, requiredMsg);
+            isValid = false;
+        }
+        
+        // If form is not valid, stop here
+        if (!isValid) {
+            return;
+        }
+
+        // --- If all validation passes, proceed to simulate sending ---
+        const submitBtn = document.getElementById('contact-submit-btn');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${translations[currentLang].sendingBtn}`;
+
+        setTimeout(() => {
+            contactForm.style.display = 'none';
+            document.getElementById('form-response').style.display = 'block';
+
+            // Reset form for future use
+            contactForm.reset();
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+
+            // After a while, you might want to show the form again
+            setTimeout(() => {
+                document.getElementById('form-response').style.display = 'none';
+                contactForm.style.display = 'flex'; // Use flex because the form is a flex container
+            }, 4000); // Show form again after 4 seconds
+
+        }, 1500);
+    });
+}
 });
