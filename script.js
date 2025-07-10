@@ -1,3 +1,5 @@
+// FULL AND CORRECTED script.js
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- DICTIONARY FOR TRANSLATIONS ---
     const translations = {
@@ -17,8 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
             contactAddress: "Riyadh, Saudi Arabia", contactNameLabel: "Name", contactEmailLabel: "Email", contactMessageLabel: "Message",
             contactSendBtn: "Send Message", formResponseTitle: "Thank You!", formResponseText: "We have received your message and will get back to you shortly.",
             sendingBtn: "Sending...", fillAllFields: "Please fill out all fields.",
-            startScanBtn: "Scan with Camera", uploadBtn: "Upload Image", scanResultTitle: "Scan Result:", scanAgainBtn: "Scan Again",
-            scannerError: "Could not access the camera. Please grant permission and try again.", noCodeInImageError: "No QR code or barcode found in the selected image.",
+            startScanBtn: "Scan with Camera", uploadBtn: "Upload Image", cancelScanBtn: "Cancel", scanResultTitle: "Scan Result:", scanAgainBtn: "Scan Again",
+            scannerError: "Camera access was denied. Please allow camera access in your browser settings and try again.", noCameraError: "No camera found on this device.", noCodeInImageError: "No QR code or barcode found in the selected image.",
             footerCopyright: "© 2023 Ramzak. All rights reserved."
         },
         ar: {
@@ -37,8 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
             contactAddress: "الرياض، المملكة العربية السعودية", contactNameLabel: "الاسم", contactEmailLabel: "البريد الإلكتروني", contactMessageLabel: "الرسالة",
             contactSendBtn: "إرسال الرسالة", formResponseTitle: "شكراً لك!", formResponseText: "لقد استلمنا رسالتك وسنقوم بالرد في أقرب وقت ممكن.",
             sendingBtn: "جارٍ الإرسال...", fillAllFields: "الرجاء تعبئة جميع الحقول.",
-            startScanBtn: "المسح بالكاميرا", uploadBtn: "رفع صورة", scanResultTitle: "نتيجة المسح:", scanAgainBtn: "مسح مرة أخرى",
-            scannerError: "لا يمكن الوصول إلى الكاميرا. الرجاء منح الإذن والمحاولة مرة أخرى.", noCodeInImageError: "لم يتم العثور على رمز QR أو باركود في الصورة المحددة.",
+            startScanBtn: "المسح بالكاميرا", uploadBtn: "رفع صورة", cancelScanBtn: "إلغاء", scanResultTitle: "نتيجة المسح:", scanAgainBtn: "مسح مرة أخرى",
+            scannerError: "تم رفض الوصول إلى الكاميرا. الرجاء السماح بالوصول في إعدادات المتصفح والمحاولة مرة أخرى.", noCameraError: "لم يتم العثور على كاميرا على هذا الجهاز.", noCodeInImageError: "لم يتم العثور على رمز QR أو باركود في الصورة المحددة.",
             footerCopyright: "© 2023 رمزك. جميع الحقوق محفوظة."
         }
     };
@@ -51,9 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
           tabContents = document.querySelectorAll('.tab-content'), darkModeToggle = document.getElementById('dark-mode-toggle'),
           langArBtn = document.getElementById('lang-ar'), langEnBtn = document.getElementById('lang-en'),
           scannerContainer = document.getElementById('scanner-container'), startScanBtn = document.getElementById('start-scan-btn'),
-          scanFileInput = document.getElementById('scan-file-input'), scannerActions = document.getElementById('scanner-actions'),
-          scanResultContainer = document.getElementById('scan-result-container'), scanResultText = document.getElementById('scan-result-text'),
-          scanAgainBtn = document.getElementById('scan-again-btn'), scannerError = document.getElementById('scanner-error');
+          cancelScanBtn = document.getElementById('cancel-scan-btn'), scanFileInput = document.getElementById('scan-file-input'),
+          scannerActions = document.getElementById('scanner-actions'), scanResultContainer = document.getElementById('scan-result-container'),
+          scanResultText = document.getElementById('scan-result-text'), scanAgainBtn = document.getElementById('scan-again-btn'),
+          scannerError = document.getElementById('scanner-error');
     
     let activeTab = 'qr', generatedCode = null, codeReader = null;
 
@@ -85,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Tab Switching Logic ---
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            resetScanner();
+            resetScanner(); // Crucial: Reset scanner when changing tabs
             tabs.forEach(t => t.classList.remove('active')); tabContents.forEach(c => c.classList.remove('active'));
             tab.classList.add('active'); activeTab = tab.dataset.tab;
             document.getElementById(`${activeTab}-tab`).classList.add('active');
@@ -123,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function convertSvgToCanvasSync(svgElement) {
         const svgData = new XMLSerializer().serializeToString(svgElement);
         const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
-        const img = new Image(); img.src = "data:image/svg+xml;base64," + btoa(svgData);
+        const img = new Image(); img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)));
         canvas.width = img.width; canvas.height = img.height;
         ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.drawImage(img, 0, 0);
         return canvas;
@@ -136,18 +139,32 @@ document.addEventListener('DOMContentLoaded', () => {
         const link = document.createElement('a'); link.href = url; link.download = 'barcode.svg'; link.click();
     });
 
-    // --- Scanner Logic ---
-    startScanBtn.addEventListener('click', () => {
-        scannerError.style.display = 'none'; codeReader = new ZXing.BrowserMultiFormatReader();
-        codeReader.decodeFromVideoDevice(undefined, 'scanner-video', (result, err) => {
-            if (result) { showScanResult(result.text); codeReader.reset(); }
-            if (err && !(err instanceof ZXing.NotFoundException)) showScannerError(translations[document.documentElement.lang].scannerError);
-        }).then(() => { scannerActions.style.display = 'none'; scannerContainer.style.display = 'block'; })
-          .catch(() => showScannerError(translations[document.documentElement.lang].scannerError));
-    });
+    // --- REVISED SCANNER LOGIC ---
+    async function startCameraScan() {
+        try {
+            codeReader = new ZXing.BrowserMultiFormatReader();
+            const videoInputDevices = await codeReader.listVideoInputDevices();
+            if (videoInputDevices.length === 0) {
+                showScannerError(translations[document.documentElement.lang].noCameraError); return;
+            }
+            let selectedDeviceId = videoInputDevices[0].deviceId;
+            const rearCamera = videoInputDevices.find(device => /back|environment/i.test(device.label));
+            if (rearCamera) selectedDeviceId = rearCamera.deviceId;
+            
+            scannerActions.style.display = 'none'; scannerContainer.style.display = 'block';
+            codeReader.decodeFromVideoDevice(selectedDeviceId, 'scanner-video', (result, err) => {
+                if (result) { showScanResult(result.text); codeReader.reset(); }
+                if (err && !(err instanceof ZXing.NotFoundException)) console.error("Scanning error:", err);
+            });
+        } catch (err) {
+            console.error("Camera initialization error:", err); showScannerError(translations[document.documentElement.lang].scannerError);
+        }
+    }
+    startScanBtn.addEventListener('click', startCameraScan);
+    cancelScanBtn.addEventListener('click', resetScanner);
     scanFileInput.addEventListener('change', (event) => {
         const file = event.target.files[0]; if (!file) return;
-        const reader = new FileReader();
+        resetScanner(); const reader = new FileReader();
         reader.onload = (e) => {
             const image = new Image(); image.src = e.target.result;
             image.onload = () => {
@@ -166,13 +183,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function showScannerError(message) {
         scannerError.textContent = message; scannerError.style.display = 'block';
-        resetScanner(false); // Reset UI without hiding the error
     }
-    function resetScanner(hideError = true) {
+    function resetScanner() {
         if (codeReader) { codeReader.reset(); codeReader = null; }
         scannerContainer.style.display = 'none'; scanResultContainer.style.display = 'none';
-        if(hideError) scannerError.style.display = 'none';
-        scannerActions.style.display = 'flex'; scanFileInput.value = '';
+        scannerError.style.display = 'none'; scannerActions.style.display = 'flex';
+        scanFileInput.value = '';
     }
     
     // --- Contact Form Logic ---
