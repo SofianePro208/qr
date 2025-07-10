@@ -67,12 +67,13 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-translate-key]').forEach(el => {
             const key = el.dataset.translateKey, translation = translations[lang][key];
             if (translation) {
-                if (el.placeholder) el.placeholder = translation;
+                if (el.tagName === 'TITLE') { document.title = translation; }
+                else if (el.placeholder) { el.placeholder = translation; }
                 else {
-                    const icon = el.querySelector('i'), span = el.querySelector('span');
-                    if (el.tagName === 'TITLE') { document.title = translation; return; }
-                    if (span) span.textContent = translation; else el.textContent = translation;
-                    if (icon) el.prepend(icon, ' ');
+                    const icon = el.querySelector('i');
+                    let textNode = el.querySelector('span') || el;
+                    while(textNode.firstChild && textNode.firstChild.nodeType !== 3) { textNode = textNode.firstChild; }
+                    textNode.textContent = icon ? ` ${translation}` : translation;
                 }
             }
         });
@@ -183,13 +184,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         scannerError.textContent = translations[document.documentElement.lang][messageKey];
         scannerError.style.display = 'block';
-        scannerContainer.style.display = 'none';
+        scannerContainer.style.display = 'none'; // Hide the container on any error
     }
     startScanBtn.addEventListener('click', startCameraScan);
     cancelScanBtn.addEventListener('click', resetScanner);
     scanFileInput.addEventListener('change', (event) => {
         const file = event.target.files[0]; if (!file) return;
-        resetScanner(); const reader = new FileReader();
+        resetScanner(); // Reset UI before processing
+        const reader = new FileReader();
         reader.onload = (e) => {
             const image = new Image(); image.src = e.target.result;
             image.onload = () => {
