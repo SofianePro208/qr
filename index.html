@@ -165,23 +165,26 @@
                     <div class="contact-form-container">
                         <form id="contact-form" name="contact" method="POST" data-netlify="true">
     <input type="hidden" name="form-name" value="contact">
-                        <form id="contact-form">
-                            <div class="form-group">
-                                <label for="name" data-translate-key="contactNameLabel">الاسم</label>
-                                <input type="text" id="name" name="name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email" data-translate-key="contactEmailLabel">البريد الإلكتروني</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="message" data-translate-key="contactMessageLabel">الرسالة</label>
-                                <textarea id="message" name="message" rows="5" required></textarea>
-                            </div>
-                            <button type="submit" id="contact-submit-btn" class="btn btn-primary">
-                                <span data-translate-key="contactSendBtn">إرسال الرسالة</span>
-                            </button>
-                        </form>
+                       <form id="contact-form">
+    <div class="form-group">
+        <label for="name" data-translate-key="contactNameLabel">الاسم</label>
+        <input type="text" id="name" name="name" required>
+        <span class="error-text"></span>
+    </div>
+    <div class="form-group">
+        <label for="email" data-translate-key="contactEmailLabel">البريد الإلكتروني</label>
+        <input type="email" id="email" name="email" required>
+        <span class="error-text"></span>
+    </div>
+    <div class="form-group">
+        <label for="message" data-translate-key="contactMessageLabel">الرسالة</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+        <span class="error-text"></span>
+    </div>
+    <button type="submit" id="contact-submit-btn" class="btn btn-primary">
+        <span data-translate-key="contactSendBtn">إرسال الرسالة</span>
+    </button>
+</form>
                         <div id="form-response" style="display: none;">
                             <h3 data-translate-key="formResponseTitle">شكراً لك!</h3>
                             <p data-translate-key="formResponseText">لقد استلمنا رسالتك وسنقوم بالرد في أقرب وقت ممكن.</p>
