@@ -98,7 +98,54 @@ document.addEventListener('DOMContentLoaded', () => {
             else resultContainer.style.display = 'none';
         });
     });
+// ... (كل الكود السابق)
 
+// --- REVISED SCANNER LOGIC (More Robust Error Handling) ---
+async function startCameraScan() {
+    scannerActions.style.display = 'none';
+    scannerContainer.style.display = 'block';
+    scannerError.style.display = 'none';
+    
+    try {
+        codeReader = new ZXing.BrowserMultiFormatReader();
+        const videoInputDevices = await codeReader.listVideoInputDevices();
+        
+        if (videoInputDevices.length === 0) {
+            showScannerError(translations[document.documentElement.lang].noCameraError);
+            scannerContainer.style.display = 'none';
+            return;
+        }
+
+        let selectedDeviceId = videoInputDevices[0].deviceId;
+        const rearCamera = videoInputDevices.find(device => /back|environment/i.test(device.label));
+        if (rearCamera) {
+            selectedDeviceId = rearCamera.deviceId;
+        }
+        
+        codeReader.decodeFromVideoDevice(selectedDeviceId, 'scanner-video', (result, err) => {
+            if (result) {
+                showScanResult(result.text);
+                codeReader.reset();
+            }
+            if (err && !(err instanceof ZXing.NotFoundException)) {
+                console.error("Scanning error during operation:", err);
+            }
+        });
+
+    } catch (err) {
+        console.error("Camera initialization error:", err);
+        scannerContainer.style.display = 'none';
+        
+        // Differentiate between user denying permission vs other errors
+        if (err.name === 'NotAllowedError') {
+            showScannerError(translations[document.documentElement.lang].scannerError);
+        } else {
+            showScannerError(translations[document.documentElement.lang].noCameraError + ` (${err.name})`);
+        }
+    }
+}
+
+// ... (باقي الكود كما هو)
     // --- Generation & Download Logic ---
     generateBtn.addEventListener('click', () => { clearResult(); activeTab === 'qr' ? generateQRCode() : generateBarcode(); });
     function generateQRCode() {
