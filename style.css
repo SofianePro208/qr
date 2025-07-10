@@ -80,12 +80,12 @@ input[type="color"] { border: none; width: 40px; height: 40px; cursor: pointer; 
 .download-dropdown:hover .dropdown-menu { display: block; }
 /* Scanner / Reader Tab */
 #scanner-container { position: relative; width: 100%; max-width: 500px; margin: 0 auto 1rem auto; border-radius: var(--border-radius); overflow: hidden; background: #000; }
-#scanner-video { width: 100%; height: auto; display: block; }
+#scanner-video { width: 100%; height: auto; display: block; transform: scaleX(-1); } /* Mirror the video for user-friendliness */
 #scanner-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; }
 .scanner-line { width: 100%; height: 2px; background: red; box-shadow: 0 0 10px red; animation: scan 2s linear infinite; position: absolute; }
 @keyframes scan { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
 #scanner-overlay #cancel-scan-btn { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 10; opacity: 0.9; }
-#scanner-actions { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem; }
+#scanner-actions { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
 #scanner-actions .btn { display: inline-flex; align-items: center; justify-content: center; }
 #scanner-actions .btn i { margin-inline-end: 8px; }
 #scan-result-container { background: var(--secondary-color); padding: 1rem; border-radius: var(--border-radius); text-align: center; word-break: break-all; }
@@ -114,13 +114,13 @@ body[data-theme="dark"] .contact .section-subtitle { color: #aaa; }
 .contact-info ul li i { font-size: 1.5rem; color: var(--accent-color); width: 40px; text-align: center; margin-inline-end: 1rem; }
 .contact-info ul li a, .contact-info ul li span { color: var(--text-color); font-weight: 700; transition: color 0.3s; }
 .contact-info ul li a:hover { color: var(--accent-color); }
-.form-group { margin-bottom: 1.5rem; }
+.form-group { position: relative; margin-bottom: 1.5rem; }
 .form-group label { display: block; font-weight: 700; margin-bottom: 0.5rem; color: var(--primary-color); }
 #contact-form input, #contact-form textarea { width: 100%; padding: 12px; font-size: 1rem; border: 2px solid var(--border-color); border-radius: var(--border-radius); font-family: 'Cairo', sans-serif; background-color: var(--secondary-color); color: var(--text-color); transition: all 0.3s; }
 #contact-form input:focus, #contact-form textarea:focus { outline: none; border-color: var(--accent-color); background-color: var(--bg-color); }
 /* Form Validation Styles */
 .form-group .error-text { color: #e74c3c; font-size: 0.9rem; font-weight: 700; display: none; margin-top: 5px; }
-.form-group.error input, .form-group.error textarea { border-color: #e74c3c; background-color: #fff6f6; }
+.form-group.error input, .form-group.error textarea { border-color: #e74c3c !important; background-color: #fff6f6; }
 body[data-theme="dark"] .form-group.error input, body[data-theme="dark"] .form-group.error textarea { background-color: #3d2f2f; }
 .form-group.error .error-text { display: block; }
 /* Form Response */
