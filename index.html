@@ -138,48 +138,42 @@
             </div>
         </section>
 
-<section class="contact" id="contact">
+        <section class="contact" id="contact">
             <div class="container">
                 <h2 data-translate-key="contactTitle">Contact Us</h2>
                 <p class="section-subtitle" data-translate-key="contactSubtitle">Have a question or a suggestion? We'd love to hear from you!</p>
                 <div class="contact-wrapper">
                     <div class="contact-info">
                         <h3 data-translate-key="contactInfoTitle">Contact Information</h3>
-                        <p data-translate-key="contactInfoDesc">Feel free to contact us directly through the following channel.</p>
+                        <p data-translate-key="contactInfoDesc">Feel free to contact us directly through the following channels.</p>
+                        <ul>
+                            <li><i class="fas fa-envelope"></i> <a href="mailto:support@ramzak.com">support@ramzak.com</a></li>
+                            <li><i class="fas fa-phone"></i> <a href="tel:+123456789">+1 (234) 567-89</a></li>
+                            <li><i class="fas fa-map-marker-alt"></i> <span data-translate-key="contactAddress">Riyadh, Saudi Arabia</span></li>
+                        </ul>
                     </div>
                     <div class="contact-form-container">
-                <form id="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
-    <!-- THIS IS THE NEW, CRUCIAL LINE -->
-    <input type="hidden" name="form-name" value="contact" />
-
-    <!-- Netlify Anti-Spam Field (hidden from users) -->
-    <p class="hidden" style="display:none;">
-        <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
-    </p>
-
-  <div class="form-group">
-    <label for="name" data-translate-key="contactNameLabel">Name</label>
-    <input type="text" id="name" name="name" required>
-    <span class="error-text"></span>
-  </div>
-
-  <div class="form-group">
-    <label for="email" data-translate-key="contactEmailLabel">Email</label>
-    <input type="email" id="email" name="email" required>
-    <span class="error-text"></span>
-  </div>
-
-  <div class="form-group">
-    <label for="message" data-translate-key="contactMessageLabel">Message</label>
-    <textarea id="message" name="message" rows="5" required></textarea>
-    <span class="error-text"></span>
-  </div>
-
-  <button type="submit" id="contact-submit-btn" class="btn btn-primary">
-    <span data-translate-key="contactSendBtn">Send Message</span>
-  </button>
-</form>
-
+                        <form id="contact-form" name="contact" method="POST" data-netlify="true" novalidate>
+                            <input type="hidden" name="form-name" value="contact" />
+                            <div class="form-group">
+                                <label for="name" data-translate-key="contactNameLabel">Name</label>
+                                <input type="text" id="name" name="name" required>
+                                <span class="error-text"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" data-translate-key="contactEmailLabel">Email</label>
+                                <input type="email" id="email" name="email" required>
+                                <span class="error-text"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="message" data-translate-key="contactMessageLabel">Message</label>
+                                <textarea id="message" name="message" rows="5" required></textarea>
+                                <span class="error-text"></span>
+                            </div>
+                            <button type="submit" id="contact-submit-btn" class="btn btn-primary">
+                                <span data-translate-key="contactSendBtn">Send Message</span>
+                            </button>
+                        </form>
                         <div id="form-response" style="display: none;">
                             <h3 data-translate-key="formResponseTitle">Thank You!</h3>
                             <p data-translate-key="formResponseText">We have received your message and will get back to you shortly.</p>
@@ -192,11 +186,11 @@
 
     <footer>
         <div class="container">
-            <p data-translate-key="footerCopyright">© 2025 Ramzak. All rights reserved.</p>
+            <p data-translate-key="footerCopyright">© 2023 Ramzak. All rights reserved.</p>
             <div class="social-links">
-            <a href="https://wa.me/message/WGLSISTQWPALO1" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-	<a href="https://linkedin.com/in/sofianeklm" target="_blank"><i class="fab fa-linkedin"></i></a>
-            <a href="https://t.me/SofianeKLM" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
     </footer>
