@@ -8,17 +8,18 @@ document.addEventListener('DOMContentLoaded', () => {
             qrInputPlaceholder: "Enter URL or text here...", fgColorLabel: "Code Color:", bgColorLabel: "Background:",
             barcodeInputPlaceholder: "Enter data (numbers or text)...", barcodeTypeLabel: "Type:",
             generateBtn: "Generate Code", downloadBtn: "Download",
+            downloadSizeTitle: "Download Size (px)", widthLabel: "Width", heightLabel: "Height",
             whyUsTitle: "Why Choose 'Ramzak'?",
             feature1Title: "Full Customization", feature1Desc: "Change colors and create unique codes that fit your brand.",
             feature2Title: "Multiple Types", feature2Desc: "Create standard QR codes or barcodes used on products.",
             feature3Title: "Multiple Formats", feature3Desc: "Download your codes in high-quality PNG, JPG, or SVG formats.",
             contactTitle: "Contact Us", contactSubtitle: "Have a question or a suggestion? We'd love to hear from you!",
             contactInfoTitle: "Contact Information", contactInfoDesc: "Feel free to contact us directly through the following channels.",
-            contactAddress: "Riyadh, Saudi Arabia", contactNameLabel: "Name", contactEmailLabel: "Email", contactMessageLabel: "Message",
+            contactAddress: "Algeria", contactNameLabel: "Name", contactEmailLabel: "Email", contactMessageLabel: "Message",
             contactSendBtn: "Send Message", formResponseTitle: "Thank You!", formResponseText: "We have received your message and will get back to you shortly.",
             sendingBtn: "Sending...",
             invalidEmailError: "Please enter a valid email address.", requiredFieldError: "This field is required.",
-            footerCopyright: "© 2023 Ramzak. All rights reserved."
+            footerCopyright: "© 2025 Ramzak. All rights reserved."
         },
         ar: {
             siteTitle: "رمزك | مولد رموز QR والباركود الاحترافي", navGenerator: "المولّد", navFeatures: "المميزات", navContact: "اتصل بنا",
@@ -27,17 +28,18 @@ document.addEventListener('DOMContentLoaded', () => {
             qrInputPlaceholder: "أدخل الرابط أو النص هنا...", fgColorLabel: "لون الرمز:", bgColorLabel: "لون الخلفية:",
             barcodeInputPlaceholder: "أدخل البيانات (أرقام أو حروف)...", barcodeTypeLabel: "النوع:",
             generateBtn: "توليد الرمز", downloadBtn: "تحميل",
+            downloadSizeTitle: "أبعاد التحميل (بكسل)", widthLabel: "العرض", heightLabel: "الارتفاع",
             whyUsTitle: "لماذا تختار 'رمزك'؟",
             feature1Title: "تخصيص كامل", feature1Desc: "غيّر الألوان وأنشئ رموزًا فريدة تناسب علامتك التجارية.",
             feature2Title: "أنواع متعددة", feature2Desc: "أنشئ رموز QR القياسية أو أكواد الباركود المستخدمة في المنتجات.",
             feature3Title: "صيغ متعددة", feature3Desc: "حمّل رموزك بصيغ PNG, JPG, أو SVG عالية الجودة.",
             contactTitle: "تواصل معنا", contactSubtitle: "هل لديك سؤال أو اقتراح؟ نود أن نسمع منك!",
             contactInfoTitle: "معلومات الاتصال", contactInfoDesc: "لا تتردد في التواصل معنا مباشرة عبر القنوات التالية.",
-            contactAddress: "الرياض، المملكة العربية السعودية", contactNameLabel: "الاسم", contactEmailLabel: "البريد الإلكتروني", contactMessageLabel: "الرسالة",
+            contactAddress: "الجزائر", contactNameLabel: "الاسم", contactEmailLabel: "البريد الإلكتروني", contactMessageLabel: "الرسالة",
             contactSendBtn: "إرسال الرسالة", formResponseTitle: "شكراً لك!", formResponseText: "لقد استلمنا رسالتك وسنقوم بالرد في أقرب وقت ممكن.",
             sendingBtn: "جارٍ الإرسال...",
             invalidEmailError: "الرجاء إدخال عنوان بريد إلكتروني صالح.", requiredFieldError: "هذا الحقل مطلوب.",
-            footerCopyright: "© 2023 رمزك. جميع الحقوق محفوظة."
+            footerCopyright: "© 2025 رمزك. جميع الحقوق محفوظة."
         }
     };
 
@@ -45,17 +47,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const generateBtn = document.getElementById('generate-btn'), resultContainer = document.getElementById('result-container'),
           downloadDropdown = document.getElementById('download-dropdown'), downloadPngBtn = document.getElementById('download-png'),
           downloadJpgBtn = document.getElementById('download-jpg'), downloadSvgBtn = document.getElementById('download-svg'),
-          codeOutput = document.getElementById('code-output'), tabs = document.querySelectorAll('.tab-link'),
-          tabContents = document.querySelectorAll('.tab-content'), darkModeToggle = document.getElementById('dark-mode-toggle'),
+          codeOutput = document.getElementById('code-output'), codeError = document.getElementById('code-error'),
+          tabs = document.querySelectorAll('.tab-link'), tabContents = document.querySelectorAll('.tab-content'), 
+          darkModeToggle = document.getElementById('dark-mode-toggle'),
           langArBtn = document.getElementById('lang-ar'), langEnBtn = document.getElementById('lang-en'),
           contactForm = document.getElementById('contact-form'), nameInput = document.getElementById('name'),
           emailInput = document.getElementById('email'), messageInput = document.getElementById('message');
     
-    let activeTab = 'qr', generatedCode = null;
+    let activeTab = 'qr';
 
     // --- Language & Theme Logic ---
     const setLanguage = (lang) => {
-        document.documentElement.lang = lang; document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        document.documentElement.lang = lang;
         document.querySelectorAll('[data-translate-key]').forEach(el => {
             const key = el.dataset.translateKey, translation = translations[lang][key];
             if (translation) {
@@ -69,7 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
-        langArBtn.classList.toggle('active', lang === 'ar'); langEnBtn.classList.toggle('active', lang === 'en');
+        langArBtn.classList.toggle('active', lang === 'ar');
+        langEnBtn.classList.toggle('active', lang === 'en');
         localStorage.setItem('language', lang);
     };
     const setDarkMode = (isDark) => {
@@ -87,54 +91,123 @@ document.addEventListener('DOMContentLoaded', () => {
             tabs.forEach(t => t.classList.remove('active')); tabContents.forEach(c => c.classList.remove('active'));
             tab.classList.add('active'); activeTab = tab.dataset.tab;
             document.getElementById(`${activeTab}-tab`).classList.add('active');
-            if (generatedCode) showResult(); else resultContainer.style.display = 'none';
+            clearResult();
         });
     });
+    
+    // --- Generation Logic ---
+    generateBtn.addEventListener('click', () => {
+        clearResult();
+        if (activeTab === 'qr') generateQRCode();
+        else generateBarcode();
+    });
 
-    // --- Generation & Download Logic ---
-    generateBtn.addEventListener('click', () => { clearResult(); activeTab === 'qr' ? generateQRCode() : generateBarcode(); });
     function generateQRCode() {
         const text = document.getElementById('qr-text').value; if (!text) return;
-        codeOutput.innerHTML = '';
-        generatedCode = new QRCode(codeOutput, { text, width: 256, height: 256, colorDark: document.getElementById('qr-fg-color').value, colorLight: document.getElementById('qr-bg-color').value, correctLevel: QRCode.CorrectLevel.H });
+        const fgColor = document.getElementById('qr-fg-color').value;
+        const bgColor = document.getElementById('qr-bg-color').value;
+        const qr = new QRCode({
+            content: text, padding: 4, width: 256, height: 256,
+            color: fgColor, background: bgColor, ecl: "H"
+        });
+        codeOutput.innerHTML = qr.svg();
         showResult();
     }
+
     function generateBarcode() {
-        const text = document.getElementById('barcode-text').value; if (!text) return;
-        codeOutput.innerHTML = '';
-        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg"); svg.id = 'barcode';
+        const text = document.getElementById('bc-text').value; if (!text) return;
+        const type = document.getElementById('bc-format').value;
+        const fgColor = document.getElementById('bc-fg-color').value;
+        const bgColor = document.getElementById('bc-bg-color').value;
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         codeOutput.appendChild(svg);
-        try { JsBarcode(svg, text, { format: document.getElementById('barcode-format').value, displayValue: true, fontSize: 18, textMargin: 10, background: '#ffffff' }); generatedCode = svg; showResult(); }
-        catch (e) { console.error(e); clearResult(); }
+        try { 
+            JsBarcode(svg, text, {
+                format: type, lineColor: fgColor, background: bgColor,
+                displayValue: true, fontSize: 18, textMargin: 10,
+            });
+            showResult();
+        } catch (e) {
+            handleGenerationError(e);
+        }
     }
-    async function downloadCanvas(format) {
-        let canvas;
-        if(activeTab === 'qr') canvas = codeOutput.querySelector('canvas');
-        else { const svg = codeOutput.querySelector('svg'); if (svg) canvas = await convertSvgToCanvas(svg); }
-        if (!canvas) return;
-        const link = document.createElement('a'), fileExtension = format === 'jpeg' ? 'jpg' : 'png';
-        link.download = `${activeTab}-code.${fileExtension}`; link.href = canvas.toDataURL(`image/${format}`, 1.0); link.click();
-    }
-    function convertSvgToCanvas(svgElement) {
-        return new Promise((resolve) => {
-            const svgData = new XMLSerializer().serializeToString(svgElement);
-            const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
+    
+    // --- Download Logic ---
+    async function convertAndDownload(format, isTransparent = false) {
+        const svg = codeOutput.querySelector('svg'); if (!svg) return;
+        const width = parseInt(document.getElementById('download-width').value) || 512;
+        const height = parseInt(document.getElementById('download-height').value) || 512;
+        
+        const canvas = await new Promise((resolve) => {
             const img = new Image();
+            const serializer = new XMLSerializer();
+            let svgString = serializer.serializeToString(svg);
+
+            // If transparent PNG is requested, remove the background rect from the SVG string
+            if (isTransparent) {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = svgString;
+                // Find the first <rect> element which is usually the background
+                const bgRect = tempDiv.querySelector('rect');
+                if (bgRect) {
+                    bgRect.remove();
+                }
+                svgString = tempDiv.innerHTML;
+            }
+
+            const svgBlob = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
+            const url = URL.createObjectURL(svgBlob);
+
             img.onload = () => {
-                canvas.width = img.width; canvas.height = img.height;
-                ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(img, 0, 0); resolve(canvas);
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                
+                // For JPG, we must draw a white background first, regardless of transparency
+                if (format === 'jpeg') {
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(0, 0, width, height);
+                }
+                
+                ctx.drawImage(img, 0, 0, width, height);
+                URL.revokeObjectURL(url);
+                resolve(canvas);
             };
-            const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-            img.src = URL.createObjectURL(svgBlob);
+            img.src = url;
         });
+
+        const link = document.createElement('a');
+        const fileExtension = format === 'jpeg' ? 'jpg' : 'png';
+        link.download = `${activeTab}-code.${fileExtension}`;
+        link.href = canvas.toDataURL(`image/${format}`, 1.0);
+        link.click();
     }
-    downloadPngBtn.addEventListener('click', (e) => { e.preventDefault(); downloadCanvas('png'); });
-    downloadJpgBtn.addEventListener('click', (e) => { e.preventDefault(); downloadCanvas('jpeg'); });
+
+    // Call convertAndDownload with the transparency flag set for PNG
+    downloadPngBtn.addEventListener('click', (e) => { e.preventDefault(); convertAndDownload('png', true); });
+    downloadJpgBtn.addEventListener('click', (e) => { e.preventDefault(); convertAndDownload('jpeg', false); });
+    
     downloadSvgBtn.addEventListener('click', (e) => {
-        e.preventDefault(); if (activeTab !== 'barcode' || !generatedCode) return;
-        const source = new XMLSerializer().serializeToString(generatedCode), url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
-        const link = document.createElement('a'); link.href = url; link.download = 'barcode.svg'; link.click();
+        e.preventDefault();
+        const svg = codeOutput.querySelector('svg'); if (!svg) return;
+        const source = new XMLSerializer().serializeToString(svg);
+        const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${activeTab}-code.svg`;
+        link.click();
+    });
+
+    // --- Download Dropdown Toggle Logic ---
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    dropdownToggle.addEventListener('click', () => {
+        downloadDropdown.classList.toggle('open');
+    });
+    window.addEventListener('click', (e) => {
+        if (downloadDropdown && !downloadDropdown.contains(e.target)) {
+            downloadDropdown.classList.remove('open');
+        }
     });
 
     // --- PROFESSIONAL CONTACT FORM LOGIC ---
@@ -171,15 +244,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // --- Helper Functions ---
-    function clearResult() { codeOutput.innerHTML = ''; resultContainer.style.display = 'none'; generatedCode = null; }
+    function clearResult() { codeOutput.innerHTML = ''; codeError.style.display = 'none'; resultContainer.style.display = 'none'; }
     function showResult() {
         resultContainer.style.display = 'flex';
         downloadDropdown.style.display = 'inline-block';
-        downloadSvgBtn.style.display = (activeTab === 'barcode') ? 'block' : 'none';
     }
+function handleGenerationError(e) {
+    console.error(e);
+    // Customize error message for better UX
+    let errorMessage = `Error: ${e.message || e}`;
+    if (e.message.includes("Invalid")) {
+        errorMessage = "Invalid data for this barcode type. Please check the format.";
+    }
+    codeError.textContent = errorMessage;
+    codeError.style.display = 'block';
+    resultContainer.style.display = 'flex';
+    downloadDropdown.style.display = 'none';
+}
 
     // --- INITIALIZATION ---
     setDarkMode(localStorage.getItem('theme') === 'dark');
-    setLanguage(localStorage.getItem('language') || 'ar');
+    setLanguage(localStorage.getItem('language') || 'en'); 
     document.getElementById('qr-tab').classList.add('active');
 });
