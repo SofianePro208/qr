@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             contactSendBtn: "Send Message", formResponseTitle: "Thank You!", formResponseText: "We have received your message and will get back to you shortly.",
             sendingBtn: "Sending...",
             invalidEmailError: "Please enter a valid email address.", requiredFieldError: "This field is required.",
-            footerCopyright: "© 2023 Ramzak. All rights reserved."
+            footerCopyright: "© 2025 Ramzak. All rights reserved."
         },
         ar: {
             siteTitle: "رمزك | مولد رموز QR والباركود الاحترافي", navGenerator: "المولّد", navFeatures: "المميزات", navContact: "اتصل بنا",
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
             contactSendBtn: "إرسال الرسالة", formResponseTitle: "شكراً لك!", formResponseText: "لقد استلمنا رسالتك وسنقوم بالرد في أقرب وقت ممكن.",
             sendingBtn: "جارٍ الإرسال...",
             invalidEmailError: "الرجاء إدخال عنوان بريد إلكتروني صالح.", requiredFieldError: "هذا الحقل مطلوب.",
-            footerCopyright: "© 2023 رمزك. جميع الحقوق محفوظة."
+            footerCopyright: "© 2025 رمزك. جميع الحقوق محفوظة."
         }
     };
 
