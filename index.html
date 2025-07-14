@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-translate-key="siteTitle">رمزك | مولد رموز QR والباركود الاحترافي</title>
+    <title data-translate-key="siteTitle">Ramzak | Professional QR & Barcode Generator</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,18 +13,18 @@
 <body>
     <header>
         <div class="container">
-            <a href="#" class="logo">رمزك</a>
+            <a href="#" class="logo">Ramzak</a>
             <nav>
                 <ul>
-                    <li><a href="#generator" data-translate-key="navGenerator">المولّد</a></li>
-                    <li><a href="#features" data-translate-key="navFeatures">المميزات</a></li>
-                    <li><a href="#contact" data-translate-key="navContact">اتصل بنا</a></li>
+                    <li><a href="#generator" data-translate-key="navGenerator">Generator</a></li>
+                    <li><a href="#features" data-translate-key="navFeatures">Features</a></li>
+                    <li><a href="#contact" data-translate-key="navContact">Contact Us</a></li>
                 </ul>
             </nav>
             <div class="header-controls">
                 <div class="lang-switcher">
-                    <button id="lang-ar" class="active">AR</button>
-                    <button id="lang-en">EN</button>
+                    <button id="lang-ar">AR</button>
+                    <button id="lang-en" class="active">EN</button>
                 </div>
                 <label class="dark-mode-switch">
                     <input type="checkbox" id="dark-mode-toggle">
@@ -37,47 +37,72 @@
     <main>
         <section class="hero" id="generator">
             <div class="container">
-                <h1 data-translate-key="heroTitle">حوّل أفكارك إلى رموز بلمسة واحدة</h1>
-                <p data-translate-key="heroSubtitle">أنشئ رموز QR وأكواد باركود مخصصة مجاناً وبسهولة فائقة.</p>
+                <h1 data-translate-key="heroTitle">Turn Your Ideas into Codes with One Click</h1>
+                <p data-translate-key="heroSubtitle">Create custom QR codes and barcodes for free, with super ease.</p>
 
                 <div class="generator-box">
                     <div class="tabs">
-                        <button class="tab-link active" data-tab="qr"><i class="fa-solid fa-qrcode"></i> <span data-translate-key="qrTab">رمز QR</span></button>
-                        <button class="tab-link" data-tab="barcode"><i class="fa-solid fa-barcode"></i> <span data-translate-key="barcodeTab">باركود</span></button>
+                        <button class="tab-link active" data-tab="qr"><i class="fa-solid fa-qrcode"></i> <span data-translate-key="qrTab">QR Code</span></button>
+                        <button class="tab-link" data-tab="barcode"><i class="fa-solid fa-barcode"></i> <span data-translate-key="barcodeTab">Barcode</span></button>
                     </div>
 
                     <div class="generator-content">
+                        <!-- QR Code Generator -->
                         <div id="qr-tab" class="tab-content active">
-                           <input type="text" id="qr-text" data-translate-key="qrInputPlaceholder" placeholder="أدخل الرابط أو النص هنا...">
+                           <input type="text" id="qr-text" data-translate-key="qrInputPlaceholder" placeholder="Enter URL or text here...">
                            <div class="options">
-                               <label for="qr-fg-color" data-translate-key="fgColorLabel">لون الرمز:</label>
+                               <label for="qr-fg-color" data-translate-key="fgColorLabel">Code Color:</label>
                                <input type="color" id="qr-fg-color" value="#0A2540">
-                               <label for="qr-bg-color" data-translate-key="bgColorLabel">لون الخلفية:</label>
+                               <label for="qr-bg-color" data-translate-key="bgColorLabel">Background:</label>
                                <input type="color" id="qr-bg-color" value="#FFFFFF">
                            </div>
                         </div>
 
+                        <!-- Barcode Generator -->
                         <div id="barcode-tab" class="tab-content">
-                             <input type="text" id="barcode-text" data-translate-key="barcodeInputPlaceholder" placeholder="أدخل البيانات (أرقام أو حروف)...">
+                             <input type="text" id="bc-text" data-translate-key="barcodeInputPlaceholder" placeholder="Enter data (numbers or text)...">
                              <div class="options">
-                                <label for="barcode-format" data-translate-key="barcodeTypeLabel">النوع:</label>
-                                <select id="barcode-format">
-                                    <option value="CODE128" selected>CODE128</option>
-                                    <option value="CODE39">CODE39</option>
+                                <label for="bc-format" data-translate-key="barcodeTypeLabel">Type:</label>
+                                <select id="bc-format">
+                                    <option value="CODE128" selected>Code 128</option>
+                                    <option value="CODE39">Code 39</option>
                                 </select>
-                            </div>
+                             </div>
+                             <div class="options">
+                                <label for="bc-fg-color" data-translate-key="fgColorLabel">Code Color:</label>
+                                <input type="color" id="bc-fg-color" value="#000000">
+                                <label for="bc-bg-color" data-translate-key="bgColorLabel">Background:</label>
+                                <input type="color" id="bc-bg-color" value="#FFFFFF">
+                             </div>
                         </div>
                         
                         <button id="generate-btn" class="btn btn-primary">
-                            <i class="fa-solid fa-bolt"></i> <span data-translate-key="generateBtn">توليد الرمز</span>
+                            <i class="fa-solid fa-bolt"></i> <span data-translate-key="generateBtn">Generate Code</span>
                         </button>
                     </div>
 
                     <div id="result-container" style="display: none;">
                         <div id="code-output"></div>
+                        <p id="code-error" class="error-message" style="display:none;"></p>
+                        
+                        <!-- Download Size Options -->
+                        <div id="download-options" class="download-size-options">
+                            <h4 data-translate-key="downloadSizeTitle">Download Size (px)</h4>
+                            <div class="size-inputs">
+                                <div>
+                                    <label for="download-width" data-translate-key="widthLabel">Width</label>
+                                    <input type="number" id="download-width" value="512" min="1">
+                                </div>
+                                <div>
+                                    <label for="download-height" data-translate-key="heightLabel">Height</label>
+                                    <input type="number" id="download-height" value="512" min="1">
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="download-dropdown" id="download-dropdown">
                             <button class="btn btn-secondary dropdown-toggle">
-                                <i class="fa-solid fa-download"></i> <span data-translate-key="downloadBtn">تحميل</span> <i class="fas fa-chevron-down"></i>
+                                <i class="fa-solid fa-download"></i> <span data-translate-key="downloadBtn">Download</span> <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="dropdown-menu">
                                 <a href="#" id="download-png">PNG</a>
@@ -92,22 +117,22 @@
 
         <section class="features" id="features">
             <div class="container">
-                <h2 data-translate-key="whyUsTitle">لماذا تختار "رمزك"؟</h2>
+                <h2 data-translate-key="whyUsTitle">Why Choose 'Ramzak'?</h2>
                 <div class="features-grid">
                     <div class="feature-card">
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        <h3 data-translate-key="feature1Title">تخصيص كامل</h3>
-                        <p data-translate-key="feature1Desc">غيّر الألوان وأنشئ رموزًا فريدة تناسب علامتك التجارية.</p>
+                        <h3 data-translate-key="feature1Title">Full Customization</h3>
+                        <p data-translate-key="feature1Desc">Change colors and create unique codes that fit your brand.</p>
                     </div>
                     <div class="feature-card">
                         <i class="fa-solid fa-tags"></i>
-                        <h3 data-translate-key="feature2Title">أنواع متعددة</h3>
-                        <p data-translate-key="feature2Desc">أنشئ رموز QR القياسية أو أكواد الباركود المستخدمة في المنتجات.</p>
+                        <h3 data-translate-key="feature2Title">Multiple Types</h3>
+                        <p data-translate-key="feature2Desc">Create standard QR codes or barcodes used on products.</p>
                     </div>
                     <div class="feature-card">
                         <i class="fa-solid fa-file-export"></i>
-                        <h3 data-translate-key="feature3Title">صيغ متعددة</h3>
-                        <p data-translate-key="feature3Desc">حمّل رموزك بصيغ PNG, JPG, أو SVG عالية الجودة.</p>
+                        <h3 data-translate-key="feature3Title">Multiple Formats</h3>
+                        <p data-translate-key="feature3Desc">Download your codes in high-quality PNG, JPG, or SVG formats.</p>
                     </div>
                 </div>
             </div>
@@ -115,42 +140,41 @@
 
         <section class="contact" id="contact">
             <div class="container">
-                <h2 data-translate-key="contactTitle">تواصل معنا</h2>
-                <p class="section-subtitle" data-translate-key="contactSubtitle">هل لديك سؤال أو اقتراح؟ نود أن نسمع منك!</p>
+                <h2 data-translate-key="contactTitle">Contact Us</h2>
+                <p class="section-subtitle" data-translate-key="contactSubtitle">Have a question or a suggestion? We'd love to hear from you!</p>
                 <div class="contact-wrapper">
                     <div class="contact-info">
-                        <h3 data-translate-key="contactInfoTitle">معلومات الاتصال</h3>
-                        <p data-translate-key="contactInfoDesc">لا تتردد في التواصل معنا مباشرة عبر القنوات التالية.</p>
+                        <h3 data-translate-key="contactInfoTitle">Contact Information</h3>
+                        <p data-translate-key="contactInfoDesc">Feel free to contact us directly through the following channels.</p>
                         <ul>
-                            <li><i class="fas fa-envelope"></i> <a href="mailto:support@ramzak.com">support@ramzak.com</a></li>
-                            <li><i class="fas fa-phone"></i> <a href="tel:+123456789">+1 (234) 567-89</a></li>
-                            <li><i class="fas fa-map-marker-alt"></i> <span data-translate-key="contactAddress">الرياض، المملكة العربية السعودية</span></li>
+                            <li><i class="fas fa-envelope"></i> <a href="mailto:sofianek208@gmail.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">Email-Me</a></li>
+                            <li><i class="fas fa-map-marker-alt"></i> <span data-translate-key="contactAddress">Algeria</span></li>
                         </ul>
                     </div>
                     <div class="contact-form-container">
                         <form id="contact-form" novalidate>
                             <div class="form-group">
-                                <label for="name" data-translate-key="contactNameLabel">الاسم</label>
+                                <label for="name" data-translate-key="contactNameLabel">Name</label>
                                 <input type="text" id="name" name="name" required>
                                 <span class="error-text"></span>
                             </div>
                             <div class="form-group">
-                                <label for="email" data-translate-key="contactEmailLabel">البريد الإلكتروني</label>
+                                <label for="email" data-translate-key="contactEmailLabel">Email</label>
                                 <input type="email" id="email" name="email" required>
                                 <span class="error-text"></span>
                             </div>
                             <div class="form-group">
-                                <label for="message" data-translate-key="contactMessageLabel">الرسالة</label>
+                                <label for="message" data-translate-key="contactMessageLabel">Message</label>
                                 <textarea id="message" name="message" rows="5" required></textarea>
                                 <span class="error-text"></span>
                             </div>
                             <button type="submit" id="contact-submit-btn" class="btn btn-primary">
-                                <span data-translate-key="contactSendBtn">إرسال الرسالة</span>
+                                <span data-translate-key="contactSendBtn">Send Message</span>
                             </button>
                         </form>
                         <div id="form-response" style="display: none;">
-                            <h3 data-translate-key="formResponseTitle">شكراً لك!</h3>
-                            <p data-translate-key="formResponseText">لقد استلمنا رسالتك وسنقوم بالرد في أقرب وقت ممكن.</p>
+                            <h3 data-translate-key="formResponseTitle">Thank You!</h3>
+                            <p data-translate-key="formResponseText">We have received your message and will get back to you shortly.</p>
                         </div>
                     </div>
                 </div>
@@ -160,16 +184,17 @@
 
     <footer>
         <div class="container">
-            <p data-translate-key="footerCopyright">© 2023 رمزك. جميع الحقوق محفوظة.</p>
+            <p data-translate-key="footerCopyright">© 2025 Ramzak. All rights reserved.</p>
             <div class="social-links">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="https://wa.me/message/WGLSISTQWPALO1" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+	<a href="https://linkedin.com/in/sofianeklm" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://t.me/SofianeKLM" target="_blank"><i class="fa-brands fa-telegram"></i></a>
             </div>
         </div>
     </footer>
     
-    <script src="https://cdn.jsdelivr.net/npm/davidshimjs-qrcodejs@0.0.2/qrcode.min.js"></script>
+    <!-- LIBRARIES -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-svg@1.1.0/dist/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <script src="script.js"></script>
 </body>
