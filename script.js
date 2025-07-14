@@ -15,11 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
             feature3Title: "Multiple Formats", feature3Desc: "Download your codes in high-quality PNG, JPG, or SVG formats.",
             contactTitle: "Contact Us", contactSubtitle: "Have a question or a suggestion? We'd love to hear from you!",
             contactInfoTitle: "Contact Information", contactInfoDesc: "Feel free to contact us directly through the following channels.",
-            contactAddress: "Algeria", contactNameLabel: "Name", contactEmailLabel: "Email", contactMessageLabel: "Message",
+            contactAddress: "Riyadh, Saudi Arabia", contactNameLabel: "Name", contactEmailLabel: "Email", contactMessageLabel: "Message",
             contactSendBtn: "Send Message", formResponseTitle: "Thank You!", formResponseText: "We have received your message and will get back to you shortly.",
             sendingBtn: "Sending...",
             invalidEmailError: "Please enter a valid email address.", requiredFieldError: "This field is required.",
-            footerCopyright: "© 2025 Ramzak. All rights reserved."
+            footerCopyright: "© 2023 Ramzak. All rights reserved."
         },
         ar: {
             siteTitle: "رمزك | مولد رموز QR والباركود الاحترافي", navGenerator: "المولّد", navFeatures: "المميزات", navContact: "اتصل بنا",
@@ -35,11 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
             feature3Title: "صيغ متعددة", feature3Desc: "حمّل رموزك بصيغ PNG, JPG, أو SVG عالية الجودة.",
             contactTitle: "تواصل معنا", contactSubtitle: "هل لديك سؤال أو اقتراح؟ نود أن نسمع منك!",
             contactInfoTitle: "معلومات الاتصال", contactInfoDesc: "لا تتردد في التواصل معنا مباشرة عبر القنوات التالية.",
-            contactAddress: "الجزائر", contactNameLabel: "الاسم", contactEmailLabel: "البريد الإلكتروني", contactMessageLabel: "الرسالة",
+            contactAddress: "الرياض، المملكة العربية السعودية", contactNameLabel: "الاسم", contactEmailLabel: "البريد الإلكتروني", contactMessageLabel: "الرسالة",
             contactSendBtn: "إرسال الرسالة", formResponseTitle: "شكراً لك!", formResponseText: "لقد استلمنا رسالتك وسنقوم بالرد في أقرب وقت ممكن.",
             sendingBtn: "جارٍ الإرسال...",
             invalidEmailError: "الرجاء إدخال عنوان بريد إلكتروني صالح.", requiredFieldError: "هذا الحقل مطلوب.",
-            footerCopyright: "© 2025 رمزك. جميع الحقوق محفوظة."
+            footerCopyright: "© 2023 رمزك. جميع الحقوق محفوظة."
         }
     };
 
@@ -60,15 +60,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const setLanguage = (lang) => {
         document.documentElement.lang = lang;
         document.querySelectorAll('[data-translate-key]').forEach(el => {
-            const key = el.dataset.translateKey, translation = translations[lang][key];
-            if (translation) {
-                if (el.tagName === 'TITLE') { document.title = translation; }
-                else if (el.placeholder) { el.placeholder = translation; }
-                else {
+            const key = el.dataset.translateKey;
+            const translation = translations[lang][key];
+            if (translation !== undefined) {
+                if (el.tagName === 'TITLE') {
+                    document.title = translation;
+                } else if (el.placeholder) {
+                    el.placeholder = translation;
+                } else {
                     const icon = el.querySelector('i');
-                    let textNode = el.querySelector('span') || el;
-                    while(textNode.firstChild && textNode.firstChild.nodeType !== 3) { textNode = textNode.firstChild; }
-                    textNode.textContent = icon ? ` ${translation}` : translation;
+                    const textSpan = el.querySelector('span');
+                    if (textSpan) {
+                        textSpan.textContent = translation;
+                    } else if (icon) {
+                        let textNode = icon.nextSibling;
+                        if (textNode && textNode.nodeType === 3) {
+                            textNode.textContent = ` ${translation}`;
+                        } else {
+                           el.innerHTML = icon.outerHTML + ` ${translation}`;
+                        }
+                    } else {
+                        el.textContent = translation;
+                    }
                 }
             }
         });
@@ -143,15 +156,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const serializer = new XMLSerializer();
             let svgString = serializer.serializeToString(svg);
 
-            // If transparent PNG is requested, remove the background rect from the SVG string
             if (isTransparent) {
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = svgString;
-                // Find the first <rect> element which is usually the background
                 const bgRect = tempDiv.querySelector('rect');
-                if (bgRect) {
-                    bgRect.remove();
-                }
+                if (bgRect) { bgRect.remove(); }
                 svgString = tempDiv.innerHTML;
             }
 
@@ -164,7 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 canvas.height = height;
                 const ctx = canvas.getContext('2d');
                 
-                // For JPG, we must draw a white background first, regardless of transparency
                 if (format === 'jpeg') {
                     ctx.fillStyle = '#FFFFFF';
                     ctx.fillRect(0, 0, width, height);
@@ -184,7 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
         link.click();
     }
 
-    // Call convertAndDownload with the transparency flag set for PNG
     downloadPngBtn.addEventListener('click', (e) => { e.preventDefault(); convertAndDownload('png', true); });
     downloadJpgBtn.addEventListener('click', (e) => { e.preventDefault(); convertAndDownload('jpeg', false); });
     
@@ -210,38 +217,65 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- PROFESSIONAL CONTACT FORM LOGIC ---
-    const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).toLowerCase());
+    // --- Netlify Form Logic ---
+    if(contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let isValid = true;
+            const currentLang = document.documentElement.lang;
+            const requiredMsg = translations[currentLang].requiredFieldError;
+            const invalidEmailMsg = translations[currentLang].invalidEmailError;
+            
+            [nameInput, emailInput, messageInput].forEach(input => {
+                const formGroup = input.parentElement; formGroup.classList.remove('error');
+                formGroup.querySelector('.error-text').innerText = '';
+            });
+
+            if (nameInput.value.trim() === '') { showError(nameInput, requiredMsg); isValid = false; }
+            const emailValue = emailInput.value.trim();
+            if (emailValue === '') { showError(emailInput, requiredMsg); isValid = false; } 
+            else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) { showError(emailInput, invalidEmailMsg); isValid = false; }
+            if (messageInput.value.trim() === '') { showError(messageInput, requiredMsg); isValid = false; }
+            
+            if (!isValid) return;
+
+            const formData = new FormData(contactForm);
+            const submitBtn = document.getElementById('contact-submit-btn');
+            const originalBtnHTML = submitBtn.innerHTML;
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${translations[currentLang].sendingBtn}`;
+            
+            fetch("/", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams(formData).toString()
+            })
+            .then(() => {
+                contactForm.style.display = 'none';
+                document.getElementById('form-response').style.display = 'block';
+
+                setTimeout(() => {
+                    document.getElementById('form-response').style.display = 'none';
+                    contactForm.style.display = 'block';
+                    contactForm.reset();
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnHTML;
+                }, 4000);
+            })
+            .catch((error) => {
+                alert("Error sending message. Please try again.");
+                console.error(error);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHTML;
+            });
+        });
+    }
+
     const showError = (input, message) => {
         const formGroup = input.parentElement; formGroup.classList.add('error');
         formGroup.querySelector('.error-text').innerText = message;
     };
-    const clearError = (input) => {
-        const formGroup = input.parentElement; formGroup.classList.remove('error');
-        formGroup.querySelector('.error-text').innerText = '';
-    };
-    if(contactForm) {
-        [nameInput, emailInput, messageInput].forEach(input => input.addEventListener('input', () => clearError(input)));
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault(); let isValid = true;
-            const currentLang = document.documentElement.lang, requiredMsg = translations[currentLang].requiredFieldError, invalidEmailMsg = translations[currentLang].invalidEmailError;
-            [nameInput, emailInput, messageInput].forEach(input => clearError(input));
-            if (nameInput.value.trim() === '') { showError(nameInput, requiredMsg); isValid = false; }
-            const emailValue = emailInput.value.trim();
-            if (emailValue === '') { showError(emailInput, requiredMsg); isValid = false; } else if (!validateEmail(emailValue)) { showError(emailInput, invalidEmailMsg); isValid = false; }
-            if (messageInput.value.trim() === '') { showError(messageInput, requiredMsg); isValid = false; }
-            if (!isValid) return;
-            const submitBtn = document.getElementById('contact-submit-btn'), originalBtnHTML = submitBtn.innerHTML;
-            submitBtn.disabled = true; submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${translations[currentLang].sendingBtn}`;
-            setTimeout(() => {
-                contactForm.style.display = 'none'; document.getElementById('form-response').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('form-response').style.display = 'none'; contactForm.style.display = 'flex';
-                    contactForm.reset(); submitBtn.disabled = false; submitBtn.innerHTML = originalBtnHTML;
-                }, 4000);
-            }, 1500);
-        });
-    }
     
     // --- Helper Functions ---
     function clearResult() { codeOutput.innerHTML = ''; codeError.style.display = 'none'; resultContainer.style.display = 'none'; }
@@ -249,18 +283,13 @@ document.addEventListener('DOMContentLoaded', () => {
         resultContainer.style.display = 'flex';
         downloadDropdown.style.display = 'inline-block';
     }
-function handleGenerationError(e) {
-    console.error(e);
-    // Customize error message for better UX
-    let errorMessage = `Error: ${e.message || e}`;
-    if (e.message.includes("Invalid")) {
-        errorMessage = "Invalid data for this barcode type. Please check the format.";
+    function handleGenerationError(e) {
+        console.error(e);
+        codeError.textContent = `Error: ${e.message || e}`;
+        codeError.style.display = 'block';
+        resultContainer.style.display = 'flex';
+        downloadDropdown.style.display = 'none';
     }
-    codeError.textContent = errorMessage;
-    codeError.style.display = 'block';
-    resultContainer.style.display = 'flex';
-    downloadDropdown.style.display = 'none';
-}
 
     // --- INITIALIZATION ---
     setDarkMode(localStorage.getItem('theme') === 'dark');
